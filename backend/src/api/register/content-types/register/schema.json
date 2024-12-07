@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "registers",
+  "info": {
+    "singularName": "register",
+    "pluralName": "registers",
+    "displayName": "Register "
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "FullName": {
+      "type": "string"
+    },
+    "Password": {
+      "type": "password"
+    },
+    "Email": {
+      "type": "email"
+    },
+    "Date": {
+      "type": "datetime"
+    },
+    "UserType": {
+      "type": "enumeration",
+      "enum": [
+        "Admin",
+        "Learner"
+      ]
+    },
+    "UID": {
+      "type": "uid"
+    }
+  }
+}
