@@ -116,20 +116,3 @@ yarn-error.log
 ############################
 
 coverage
-
-############################
-# Strapi
-############################
-<<<<<<< HEAD
-.env
-=======
-
-.env
-license.txt
-exports
-.strapi
-dist
-build
-.strapi-updater.json
-.strapi-cloud.json
->>>>>>> parent of 3df0505d (backend)
