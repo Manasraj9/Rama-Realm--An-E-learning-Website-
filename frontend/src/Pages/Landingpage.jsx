@@ -1,14 +1,22 @@
-import React from 'react'
-import Navbar from '../Components/Bars/Navbar'
-import Footer from '../Components/Footer'
+import About from "@/Components/LandingPage_components/About"
+import Contact from "@/Components/LandingPage_components/Contact"
+import Features from "@/Components/LandingPage_components/Features"
+import Footer from "@/Components/LandingPage_components/Footer"
+import Hero from "@/Components/LandingPage_components/Hero"
+import Navbar from "@/Components/LandingPage_components/Navbar"
+import Story from "@/Components/LandingPage_components/Story"
 
 const Landingpage = () => {
   return (
-    <div>
+    <main className='relative min-h-screen w-screen overflow-x-hidden'>
       <Navbar />
-      <div>Hii</div>
-      <Footer />
-    </div>
+      <Hero />
+      <About />
+      <Features />
+      <Story />
+      <Contact/>
+      <Footer/>
+    </main>
   )
 }
 
