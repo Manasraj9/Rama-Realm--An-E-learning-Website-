@@ -4,7 +4,7 @@ import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../Components/Bars/Navbar';
-import Footer from '../Components/Footer';
+import Footer from '../Components/LandingPage_components/Footer';
 
 const OtpVerification = () => {
     const location = useLocation();

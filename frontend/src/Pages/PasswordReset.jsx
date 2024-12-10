@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../Components/Bars/Navbar';
-import Footer from '../Components/Footer';
+import Footer from '../Components/LandingPage_components/Footer';
 import { Oval } from 'react-loader-spinner'; // Import loader
 import { toast } from 'react-toastify'; // Import Toastify
 import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
