@@ -12,22 +12,22 @@ const Login = () => {
     const [rememberMe, setRememberMe] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         const loginTime = localStorage.getItem('loginTime');
         const userType = localStorage.getItem('userType'); // Read userType from localStorage
         const SESSION_TIMEOUT = 1 * 60 * 1000; // 1 minute session timeout
-    
+
         if (token && loginTime) {
             const currentTime = new Date().getTime();
             const elapsedTime = currentTime - loginTime;
-    
+
             // Check if the session has expired
             if (elapsedTime < SESSION_TIMEOUT) {
                 // Logging for debugging
                 console.log("Session valid. User Type:", userType);
-    
+
                 // Redirect based on userType
                 if (userType === 'company') {
                     navigate('/Companyhomepage', { replace: true });
@@ -44,34 +44,34 @@ const Login = () => {
             }
         }
     }, [navigate]);
-    
-    
+
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
-    
+
         try {
             const response = await fetch('http://localhost:1000/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
             });
-    
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Login failed. Please check your credentials.');
             }
-    
+
             const data = await response.json();
             console.log(data); // Log response data
-    
+
             if (data.token) {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('userType', data.userType); // Save userType to localStorage
                 console.log("User Type set in localStorage:", data.userType); // Check stored userType
                 localStorage.setItem('loginTime', new Date().getTime());
                 toast.success('Login successful!');
-    
+
                 // Redirect based on userType
                 if (data.userType === 'jobSeeker') {
                     navigate('/Homepage');
@@ -88,10 +88,10 @@ const Login = () => {
             toast.error(`An error occurred: ${error.message}`);
         }
     };
-    
 
-    
-    
+
+
+
 
     const handleCheckboxChange = () => {
         setRememberMe(!rememberMe);
@@ -104,14 +104,22 @@ const Login = () => {
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
         setIsTyping(e.target.value.length > 0);
-    }; 
+    };
 
     return (
         <div>
             <Navbar />
             <div className='flex justify-center'>
                 <div>
-                    <img src="/images/Login.svg" alt="page for Login" className="w-[780px] h-[650px] bg-white" />
+                    <video
+                       src="/videos/Register.mp4"
+                       type="video/mp4"
+                       autoPlay
+                       loop
+                       muted
+                       className="w-[780px] h-[650px] bg-white object-cover"
+                       onError={(e) => console.error("Video failed to load:", e)}
+                        />
                 </div>
                 <div className="w-[750px] bg-[#dbe2ef]">
                     <h1 className='text-6xl text-[#112d4e] text-center mt-[100px]'>Login</h1>
