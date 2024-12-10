@@ -4,6 +4,8 @@ import Landingpage from './Pages/Landingpage';
 import Register from './Pages/Register';
 import Login from './Pages/Login';
 import About from './Pages/AboutPage';
+import Resetpassword from './Pages/PasswordReset'
+import Otpverification from './Pages/OtpVerification';
 function App() {
   return (
     <Router>
@@ -11,7 +13,7 @@ function App() {
       <Route path="/" element={<Landingpage />} />
       <Route path="/Register" element={<Register />} />
       <Route path="/Login" element={<Login />} />
-      <Route path="/Home/About" element={<About />} />
+      <Route path="/About" element={<About />} />
       </Routes>
     </Router>
   );
