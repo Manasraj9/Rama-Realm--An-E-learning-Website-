@@ -1,57 +1,32 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Logo from '../images/Logo.svg'
-
+import React from 'react'
+import { FaTwitter } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
+import { FaDiscord } from "react-icons/fa";
+const links = [
+         {href:'https://discord.com', icon: <FaDiscord />},
+         {href:'https://twitter.com', icon: <FaTwitter/>},
+         {href:'https://github.com', icon: <FaGithub/>},
+]
 const Footer = () => {
   return (
-    <footer className="bg-black text-[#d6ddeb] pt-5 pb-1">
-      <div className=" px-4">
-        <div className="flex justify-between pb-2">
-          <div>
-            <img src={Logo} alt="Company Logo" className='max-w-60' />
-          </div>
-          {/* About Section */}
-          <div>
-            <h3 className="flex-col text-lg font-semibold hover:text-white">Courses</h3>
-            <ul className="mt-4 space-y-2 hover:text-white flex flex-col">
-              <li>Virtual Classroom Courses</li>
-              <li>VR Courses</li>
-              <li>AR Courses</li>
-              <li>Privacy Policy</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="flex-col text-lg font-semibold hover:text-white">Quick Links</h3>
-            <ul className="mt-4 space-y-2 hover:text-white flex flex-col">
-              <li>Home</li>
-              <li>Courses</li>
-              <li>Programs</li>
-              <li>Testimonial</li>
-              <li>Blog</li>
-            </ul>
-          </div>
-
-          {/* Resources Section */}
-          <div className='mr-10'>
-            <h3 className="text-lg font-semibold hover:text-white">More</h3>
-            <ul className="mt-4 space-y-2 hover:text-white flex flex-col">
-              <li>Terms</li>
-              <li>Privacy</li>
-              <li>Help</li>
-              <li>Contact Us</li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Footer Bottom */}
-        <div className="border-t border-gray-700 pt-1">
-          <p className="text-center text-gray-400">
-            2024 © Rama Realm. All rights reserved.
-          </p>
-        </div>
+    <footer className='w-screen bg-violet-300 py-4 text-black'>
+      <div className='container mx-auto flex flex-col items-center justify-evenly gap-4 px-4 md:flex-row'>
+         <p className='text-center text-sm md:text-left'>
+            &copy; Rama Realm 2024. All rigths reserved
+         </p>
+         <div className='flex justify-center gap-4 md:justify-start'>
+           {links.map((link)=>(
+              <a key={link} href={link.href} target='_blank' rel='noopener noreferrer' className='text-black transition-colors duration-500 ease-in-out hover:text-white'>
+                  {link.icon}
+              </a>    
+           ))}
+         </div>
+         <a href='#privacy-policy' className=' hover:text-white text-center text-sm hover:underline md:text-right'>
+            Privacy Policy
+         </a>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

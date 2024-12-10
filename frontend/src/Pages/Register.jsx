@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import Navbar from '../Components/Bars/Navbar';
-import Footer from '../Components/Footer';
+import Footer from '../Components/HomePage_components/Footer';
 import { toast } from 'react-toastify';
 import image1 from '../images/Register_Learners.svg';
 
