@@ -4,6 +4,13 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  width: 100dvw;
+  overflow-x: hidden;
+  background-color: #dfdff0;
+  font-family: "General Sans", sans-serif;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -72,23 +79,23 @@
 @layer base {
   @font-face {
    font-family:'circular-web';
-   src: url('/frontend/public/fonts/circularweb-book.woff2') format('woff2');
+   src: url('/frontend/public/fonts/circularweb-book.woff2') format("woff2");
   }
   @font-face {
    font-family: 'general';
-   src: url('/frontend/public/fonts/general.woff2') format('woff2');
+   src: url('/frontend/public/fonts/general.woff2') format("woff2");
   }
   @font-face {
    font-family: 'robert-medium';
-   src: url('/frontend/public/fonts/robert-medium.woff2') format('woff2');
+   src: url('/frontend/public/fonts/robert-medium.woff2') format("woff2");
   }
   @font-face {
    font-family: 'robert-regular';
-   src: url('/frontend/public/fonts/robert-regular.woff2')format('woff2');
+   src: url('/frontend/public/fonts/robert-regular.woff2')format("woff2");
   }
   @font-face {
    font-family: 'zentry';
-   src: url('/frontend/public/fonts/zentry-regular.woff2')format('woff2');
+   src: url('/frontend/public/fonts/zentry-regular.woff2')format("woff2");
   }
 }
 
@@ -99,7 +106,6 @@
   .after-custom-ease {
     @apply ease-[cubic-bezier(0.65, 0.05, 0.36, 1)];
   }
-
   .nav-hover-btn {
     @apply relative ms-10 font-general text-xs uppercase text-blue-50 after:absolute after:-bottom-0.5 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-neutral-100 after:transition after:duration-300 after:ease-custom-ease hover:after:origin-bottom-left hover:after:scale-x-100 dark:after:bg-white cursor-pointer;
   }
