@@ -64,7 +64,7 @@ const Navbar = () => {
                        id="Course-button"
                        title = "Courses"
                        rightIcon={<GrMultimedia />}
-                       containerClass="bg-blue-50 text-black md:flex hidden items-cente justify-center gap-1"
+                       containerClass="bg-blue-50 text-black md:flex hidden items-center justify-center gap-1"
                        />
                   </div>
                   <div className='flex h-full items-center'>
