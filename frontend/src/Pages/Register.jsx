@@ -9,7 +9,7 @@ import image1 from '../images/Register_Learners.svg';
 const Register = () => {
     const [selectedOption, setSelectedOption] = useState('Learner');
     const [userType, setUserType] = useState('Learner');
-    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
@@ -18,7 +18,7 @@ const Register = () => {
     // Validation Functions
     const validateEmail = (email) => /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
     const validatePassword = (password) =>/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
-    const validateName = (name) => name.trim().length >= 3; // Minimum 3 characters for name
+    const validateName = (username) => username.trim().length >= 3; // Minimum 3 characters for name
 
 
     // Update userType when selecting Job Seeker or Company
@@ -31,7 +31,7 @@ const Register = () => {
         e.preventDefault();
     
         // Client-side validation
-        if (!validateName(name)) {
+        if (!validateName(username)) {
             toast.error('Name must be at least 3 characters long.');
             return;
         }
@@ -53,25 +53,38 @@ const Register = () => {
             return;
         }
     
+        // Prepare the data to be sent
+        const userData = {
+            username,
+            email,
+            password,
+            userType: selectedOption // Make sure selectedOption is either 'Learner' or 'Admin'
+        };
+    
+        console.log("Sending data to the backend:", userData);  // Log the data being sent
+    
         // Proceed with API call if all validations pass
         try {
-            const response = await fetch('http://localhost:1337/api/register', {
+            const response = await fetch('http://localhost:1337/api/auth/local/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password, userType }),
+                body: JSON.stringify(userData),
             });
+    
             const data = await response.json();
     
             if (!response.ok) {
-                throw new Error(data.message);
+                console.log("Error response:", data); // Log the error response from the backend
+                throw new Error(data.message || 'Signup failed');
             }
     
             toast.success(data.message || 'Registered successfully!');
         } catch (error) {
-            console.error('Signup error:', error.message);
+            console.error('Signup error:', error.message);  // Log the error to the console
             toast.error(`Signup failed: ${error.message}`);
         }
     };
+    
     
 
     return (
@@ -102,10 +115,10 @@ const Register = () => {
                     <div className='flex justify-center pt-8'>
                         {selectedOption === 'Learner' ? (
                             <LearnerForm
-                                name={name}
+                                username={username}
                                 email={email}
                                 password={password}
-                                setName={setName}
+                                setUsername={setUsername}
                                 setEmail={setEmail}
                                 setPassword={setPassword}
                                 confirmPass={confirmPass}
@@ -118,10 +131,10 @@ const Register = () => {
                             />
                         ) : (
                             <AdminForm
-                                name={name}
+                                username={username}
                                 email={email}
                                 password={password}
-                                setName={setName}
+                                setUsername={setUsername}
                                 setEmail={setEmail}
                                 setPassword={setPassword}
                                 confirmPass={confirmPass}
@@ -143,7 +156,7 @@ const Register = () => {
 
 
 // Job Seeker Form Component
-const LearnerForm = ({ name, email, password, confirmPass, setName, setEmail, setPassword, setConfirmPass, handleRegister, error, success, showPassword, setShowPassword, showConfirmPassword, setShowConfirmPassword }) => {
+const LearnerForm = ({ username, email, password, confirmPass, setUsername, setEmail, setPassword, setConfirmPass, handleRegister, error, success, showPassword, setShowPassword, showConfirmPassword, setShowConfirmPassword }) => {
     return (
         <div className='w-[550px] text-[#112d4e]'>
             <h2 className="text-center text-5xl font-semibold mb-6">Register as Learner</h2>
@@ -153,8 +166,8 @@ const LearnerForm = ({ name, email, password, confirmPass, setName, setEmail, se
                     type="text"
                     placeholder="Full Name"
                     className="w-full mb-6 p-2 border rounded"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                 />
                 <p className='pb-1'>Enter Email Address</p>
                 <input
@@ -212,7 +225,7 @@ const LearnerForm = ({ name, email, password, confirmPass, setName, setEmail, se
     );
 };
 // Company Form Component
-const AdminForm = ({ name, email, password, confirmPass, setName, setEmail, setPassword, setConfirmPass, handleRegister, error, success, showPassword, setShowPassword, showConfirmPassword, setShowConfirmPassword }) => {
+const AdminForm = ({ username, email, password, confirmPass, setUsername, setEmail, setPassword, setConfirmPass, handleRegister, error, success, showPassword, setShowPassword, showConfirmPassword, setShowConfirmPassword }) => {
     return (
         <div className='w-[550px] text-[#112d4e]'>
             <h2 className="text-center text-5xl font-semibold mb-6">Register as Admin</h2>
@@ -222,7 +235,7 @@ const AdminForm = ({ name, email, password, confirmPass, setName, setEmail, setP
                     type="text"
                     placeholder="Full Name"
                     className="w-full mb-6 p-2 border rounded"
-                    value={name}
+                    value={username}
                     onChange={(e) => setName(e.target.value)}
                 />
                 <p className='pb-1'>Enter Email Address</p>
