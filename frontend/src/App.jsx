@@ -14,6 +14,8 @@ function App() {
       <Route path="/Register" element={<Register />} />
       <Route path="/Login" element={<Login />} />
       <Route path="/About" element={<About />} />
+      <Route path="/Resetpassword" element={<Resetpassword />} />
+      <Route path="/Otpverification" element={<Otpverification />} />
       </Routes>
     </Router>
   );
