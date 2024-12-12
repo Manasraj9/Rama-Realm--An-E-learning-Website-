@@ -742,7 +742,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     blocked: Attribute.Boolean & Attribute.DefaultTo<false>;
@@ -785,6 +784,8 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         minLength: 3;
       }>;
+    userType: Attribute.Enumeration<['Learner', 'Admin']> &
+      Attribute.DefaultTo<'Learner'>;
   };
 }
 

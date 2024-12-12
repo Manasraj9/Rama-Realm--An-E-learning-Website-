@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate } from 'react-router-dom';
 import Navbar from '../Components/Bars/Navbar';
 import Footer from '../Components/HomePage_components/Footer';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import image1 from '../images/Register_Learners.svg';
 
 const Register = () => {
@@ -15,9 +16,10 @@ const Register = () => {
     const [confirmPass, setConfirmPass] = useState('');
     const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
     const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Separate state for confirm password visibility
+    const navigate = useNavigate();
     // Validation Functions
     const validateEmail = (email) => /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
-    const validatePassword = (password) =>/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
+    const validatePassword = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
     const validateName = (username) => username.trim().length >= 3; // Minimum 3 characters for name
 
 
@@ -29,30 +31,28 @@ const Register = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-    
+
         // Client-side validation
         if (!validateName(username)) {
             toast.error('Name must be at least 3 characters long.');
             return;
         }
-    
+
         if (!validateEmail(email)) {
             toast.error('Please enter a valid email address.');
             return;
         }
-    
+
         if (!validatePassword(password)) {
-            toast.error(
-                'Password must contain at least 8 characters, including uppercase, lowercase, number, and a special character.'
-            );
+            toast.error('Password must contain at least 8 characters, including uppercase, lowercase, number, and a special character.');
             return;
         }
-    
+
         if (password !== confirmPass) {
             toast.error('Passwords do not match.');
             return;
         }
-    
+
         // Prepare the data to be sent
         const userData = {
             username,
@@ -60,9 +60,9 @@ const Register = () => {
             password,
             userType: selectedOption // Make sure selectedOption is either 'Learner' or 'Admin'
         };
-    
+
         console.log("Sending data to the backend:", userData);  // Log the data being sent
-    
+
         // Proceed with API call if all validations pass
         try {
             const response = await fetch('http://localhost:1337/api/auth/local/register', {
@@ -70,22 +70,20 @@ const Register = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData),
             });
-    
+
             const data = await response.json();
-    
+
             if (!response.ok) {
                 console.log("Error response:", data); // Log the error response from the backend
                 throw new Error(data.message || 'Signup failed');
             }
-    
-            toast.success(data.message || 'Registered successfully!');
+            toast.success('Registered successfully!');
+            navigate('/login'); // Redirect to login page
         } catch (error) {
             console.error('Signup error:', error.message);  // Log the error to the console
             toast.error(`Signup failed: ${error.message}`);
         }
     };
-    
-    
 
     return (
         <div>
@@ -93,8 +91,8 @@ const Register = () => {
             <div className='flex'>
                 <div className='bg-white flex justify-center'>
                     <img src={selectedOption === 'Learner' ? image1 : image1}
-                    alt="Register Page Visual"
-                    className="w-[780px] h-[700px]" />
+                        alt="Register Page Visual"
+                        className="w-[780px] h-[700px]" />
                 </div>
                 <div className='w-[750px] bg-[#dbe2ef] text-[#112d4e]'>
                     <div className='flex justify-center pt-8'>
