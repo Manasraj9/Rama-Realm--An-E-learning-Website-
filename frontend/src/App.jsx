@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 import Landingpage from './Pages/Landingpage';
 import Register from './Pages/Register';
 import Login from './Pages/Login';
@@ -9,6 +11,7 @@ import Otpverification from './Pages/OtpVerification';
 function App() {
   return (
     <Router>
+      <ToastContainer position="top-right" autoClose={2000} hideProgressBar />
       <Routes>
       <Route path="/" element={<Landingpage />} />
       <Route path="/Register" element={<Register />} />
