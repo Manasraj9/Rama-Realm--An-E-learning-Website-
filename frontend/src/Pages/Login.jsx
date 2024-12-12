@@ -13,85 +13,47 @@ const Login = () => {
     const [isTyping, setIsTyping] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        const loginTime = localStorage.getItem('loginTime');
-        const userType = localStorage.getItem('userType'); // Read userType from localStorage
-        const SESSION_TIMEOUT = 1 * 60 * 1000; // 1 minute session timeout
-
-        if (token && loginTime) {
-            const currentTime = new Date().getTime();
-            const elapsedTime = currentTime - loginTime;
-
-            // Check if the session has expired
-            if (elapsedTime < SESSION_TIMEOUT) {
-                // Logging for debugging
-                console.log("Session valid. User Type:", userType);
-
-                // Redirect based on userType
-                if (userType === 'company') {
-                    navigate('/Companyhomepage', { replace: true });
-                } else if (userType === 'jobSeeker') {
-                    navigate('/Homepage', { replace: true });
-                } else {
-                    navigate('/'); // Fallback in case userType is not defined
-                }
-            } else {
-                // Session expired, clear token and login time
-                localStorage.removeItem('token');
-                localStorage.removeItem('loginTime');
-                localStorage.removeItem('userType'); // Clear user type on session expiry
-            }
-        }
-    }, [navigate]);
-
-
-
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:1000/login', {
+            const response = await fetch('http://localhost:1337/api/auth/local', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ identifier: email, password }),
             });
+            const data = await response.json();
 
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Login failed. Please check your credentials.');
             }
 
-            const data = await response.json();
-            console.log(data); // Log response data
-
-            if (data.token) {
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('userType', data.userType); // Save userType to localStorage
-                console.log("User Type set in localStorage:", data.userType); // Check stored userType
+            if (data.jwt && data.user) {
+                // Store token and user data in localStorage
+                localStorage.setItem('token', data.jwt);
+                localStorage.setItem('userType', data.user.userType || 'Guest'); // Default to 'Guest' if undefined
                 localStorage.setItem('loginTime', new Date().getTime());
+    
                 toast.success('Login successful!');
-
+    
                 // Redirect based on userType
-                if (data.userType === 'jobSeeker') {
-                    navigate('/Homepage');
-                } else if (data.userType === 'company') {
-                    navigate('/Companyhomepage');
+                if (data.user.userType === 'Admin') {
+                    navigate('/Admin'); // Admin homepage
+                } else if (data.user.userType === 'Learner') {
+                    navigate('/Learner'); // Learner homepage
                 } else {
-                    navigate('/'); // Fallback in case userType is not defined
+                    console.warn('Unknown userType:', data.user.userType);
+                    navigate('/'); // Default fallback homepage
                 }
             } else {
                 toast.error(data.message || 'Unexpected error. Please try again.');
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error during login:', error.message);
             toast.error(`An error occurred: ${error.message}`);
         }
     };
-
-
-
-
 
     const handleCheckboxChange = () => {
         setRememberMe(!rememberMe);

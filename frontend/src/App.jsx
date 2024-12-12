@@ -8,6 +8,8 @@ import Login from './Pages/Login';
 import About from './Pages/AboutPage';
 import Resetpassword from './Pages/PasswordReset'
 import Otpverification from './Pages/OtpVerification';
+import AdminHomepage from './Pages/Admin/AdminHomepage';
+import LearnerHomepage from './Pages/Learner/LearnerHomepage';
 function App() {
   return (
     <Router>
@@ -19,6 +21,8 @@ function App() {
       <Route path="/About" element={<About />} />
       <Route path="/Resetpassword" element={<Resetpassword />} />
       <Route path="/Otpverification" element={<Otpverification />} />
+      <Route path="/Admin" element={<AdminHomepage />} />
+      <Route path="/Learner" element={<LearnerHomepage />} />
       </Routes>
     </Router>
   );
