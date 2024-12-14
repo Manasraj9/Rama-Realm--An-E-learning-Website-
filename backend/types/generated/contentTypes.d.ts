@@ -362,6 +362,63 @@ export interface AdminUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiLearnerDataLearnerData extends Schema.CollectionType {
+  collectionName: 'learners_data';
+  info: {
+    description: '';
+    displayName: 'Learner Data';
+    pluralName: 'learners-data';
+    singularName: 'learner-data';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    class: Attribute.Enumeration<
+      [
+        'Year 1',
+        'Year 2',
+        'Year 3',
+        'Year 4',
+        'Class I',
+        'Class II',
+        'Class III',
+        'Class IV',
+        'Class V',
+        'Class VI',
+        'Class VII',
+        'Class VIII',
+        'Class IX',
+        'Class X',
+        'Class XI',
+        'Class XII'
+      ]
+    >;
+    createdAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::learner-data.learner-data',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    email: Attribute.Email & Attribute.Required & Attribute.Unique;
+    FullName: Attribute.String &
+      Attribute.Required &
+      Attribute.SetMinMaxLength<{
+        minLength: 3;
+      }>;
+    Institutetype: Attribute.Enumeration<['School', 'College']>;
+    publishedAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    updatedBy: Attribute.Relation<
+      'api::learner-data.learner-data',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginContentReleasesRelease extends Schema.CollectionType {
   collectionName: 'strapi_releases';
   info: {
@@ -799,6 +856,7 @@ declare module '@strapi/types' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::learner-data.learner-data': ApiLearnerDataLearnerData;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
