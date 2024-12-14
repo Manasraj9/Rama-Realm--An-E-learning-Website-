@@ -1,8 +1,10 @@
-import React from 'react'
+
 
 const Courses = () => {
   return (
-    <div>courses</div>
+    <div className="flex">
+      <div>courses</div>
+    </div>
   )
 }
 

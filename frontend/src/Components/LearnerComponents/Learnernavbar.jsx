@@ -36,7 +36,7 @@ const Learnernavbar = () => {
          },[isNavVisible])
 
   return (
-    <div ref={NavContainerRef} className='fixed z-50 top-0 w-dvw h-20 border-b-solid border-2 border-black/40 transition-all duration-700'>
+    <div ref={NavContainerRef} className='fixed z-50 top-0 w-full h-20 transition-all duration-700'>
        <header className='absolute top-1/2 w-full -translate-y-1/2'>
             <nav className='flex items-center size-full justify-between p-4 rounded-lg'>
                   <div className='flex items-center gap-7'>
