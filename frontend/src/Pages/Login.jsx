@@ -34,9 +34,9 @@ const Login = () => {
                 localStorage.setItem('token', data.jwt);
                 localStorage.setItem('userType', data.user.userType || 'Guest'); // Default to 'Guest' if undefined
                 localStorage.setItem('loginTime', new Date().getTime());
-    
+
                 toast.success('Login successful!');
-    
+
                 // Redirect based on userType
                 if (data.user.userType === 'Admin') {
                     navigate('/Admin'); // Admin homepage
@@ -71,27 +71,27 @@ const Login = () => {
     return (
         <div>
             <Navbar />
-            <div className='flex justify-center'>
-                <div>
-                    <video
-                       src="/videos/Register.mp4"
-                       type="video/mp4"
-                       autoPlay
-                       loop
-                       muted
-                       className="w-[780px] h-[650px] bg-white object-cover"
-                       onError={(e) => console.error("Video failed to load:", e)}
-                        />
-                </div>
-                <div className="w-[750px] bg-[#dbe2ef]">
-                    <h1 className='text-6xl text-[#112d4e] text-center mt-[100px]'>Login</h1>
-                    <div className='ml-[100px] mt-[40px] w-[550px] text-[#112d4e] justify-center'>
+            <div className='bg-white flex justify-center z-0'>
+                <video
+                    src="/videos/Login.mp4"
+                    type="video/mp4"
+                    autoPlay
+                    loop
+                    muted
+                    className="w-full max-h-[650px] bg-white object-cover"
+                    onError={(e) => console.error("Video failed to load:", e)}
+                />
+            </div>
+            <div className="absolute inset-0 mt-28">
+                <h1 className='text-8xl text-white text-center mt-[100px]'>Login</h1>
+                <div className='flex justify-center pt-2'>
+                    <div className='w-[550px] text-white justify-center'>
                         <form onSubmit={handleLogin}>
                             <p className='mb-1'>Enter Email Address</p>
                             <input
                                 type="email"
                                 placeholder="Email Address"
-                                className="w-full mb-6 p-2 border rounded"
+                                className="w-full p-3 bg-transparent border-2 border-white text-white placeholder-[#B0BEC5] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white focus:text-gray-900 rounded-lg"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
@@ -100,20 +100,15 @@ const Login = () => {
                                 <input
                                     type="text"
                                     placeholder="Password"
-                                    className="w-full p-2 border rounded"
+                                    className="w-full p-3 bg-transparent border-2 border-white text-white placeholder-[#B0BEC5] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white focus:text-gray-900 rounded-lg"
                                     value={password}
                                     onChange={handlePasswordChange}
-                                    style={{ WebkitTextSecurity: showPassword ? 'none' : 'disc' }}
                                 />
                                 <span
-                                    onClick={togglePasswordVisibility}
-                                    className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-blue-800"
                                 >
-                                    {isTyping ? (
-                                        showPassword ? <AiFillEyeInvisible size={24} /> : <AiFillEye size={24} />
-                                    ) : (
-                                        <AiFillEye size={24} />
-                                    )}
+                                    {showPassword ? <AiFillEyeInvisible size={24} /> : <AiFillEye size={24} />}
                                 </span>
                             </div>
                             <div className='flex'>
@@ -123,14 +118,14 @@ const Login = () => {
                                         id="rememberMe"
                                         checked={rememberMe}
                                         onChange={handleCheckboxChange}
-                                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                        className="h-4 w-4 text-white focus:ring-blue-500 border-gray-300 rounded"
                                     />
-                                    <label htmlFor="rememberMe" className="ml-2 text-gray-700">
+                                    <label htmlFor="rememberMe" className="ml-2">
                                         Remember Me
                                     </label>
                                 </div>
                                 <div className="mt-0.5 flex ml-auto justify-center items-center mb-1">
-                                    <p className="text-base text-[#112d4e]">Forgot Password?</p>
+                                    <p className="text-base ">Forgot Password?</p>
                                     <Link to="/Resetpassword">
                                         <p className="text-blue-400 hover:underline pl-[4px]">Reset it</p>
                                     </Link>
@@ -141,7 +136,7 @@ const Login = () => {
                             </button>
                         </form>
                         <div className="mt-2 flex">
-                            <p className="text-base text-[#112d4e]">Don't have an Account?</p>
+                            <p className="text-base">Don't have an Account?</p>
                             <Link to="/Register">
                                 <p className="text-blue-400 hover:underline pl-[4px]">Register</p>
                             </Link>
