@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { Link , useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../Components/Bars/Navbar';
 import Footer from '../Components/HomePage_components/Footer';
 import { toast } from 'react-toastify';
@@ -88,63 +88,67 @@ const Register = () => {
     return (
         <div>
             <Navbar />
-            <div className='flex'>
-                <div className='bg-white flex justify-center'>
-                    <img src={selectedOption === 'Learner' ? image1 : image1}
-                        alt="Register Page Visual"
-                        className="w-[780px] h-[700px]" />
+            <div className='bg-white flex justify-center z-0'>
+                <video
+                    src="/videos/Register.mp4"
+                    type="video/mp4"
+                    autoPlay
+                    loop
+                    muted
+                    className="w-full max-h-[650px] bg-white object-cover"
+                    onError={(e) => console.error("Video failed to load:", e)}
+                />
+            </div>
+            <div className="absolute inset-0 mt-28">
+                <div className='flex justify-center pt-2'>
+                    <div
+                        onClick={() => handleOptionChange('Learner')}
+                        className={`h-10 px-3 py-[7px] ${selectedOption === 'Learner' ? 'bg-white' : 'bg-transparent'} cursor-pointer justify-center items-center gap-2.5 inline-flex`}
+                    >
+                        <div className={`text-base font-semibold font-['Epilogue'] leading-relaxed ${selectedOption === 'Learner' ? 'text-[#3f72af]' : 'text-white'}`}>Learner</div>
+                    </div>
+                    <div
+                        onClick={() => handleOptionChange('Admin')}
+                        className={`h-10 px-3 py-[7px] ${selectedOption === 'Admin' ? 'bg-white' : 'bg-transparent'} cursor-pointer justify-center items-center gap-2.5 inline-flex`}
+                    >
+                        <div className={`text-base font-semibold font-['Epilogue'] leading-relaxed ${selectedOption === 'Admin' ? 'text-[#3f72af]' : 'text-white'}`}>Admin</div>
+                    </div>
                 </div>
-                <div className='w-[750px] bg-[#dbe2ef] text-[#112d4e]'>
-                    <div className='flex justify-center pt-8'>
-                        <div
-                            onClick={() => handleOptionChange('Learner')}
-                            className={`h-10 px-3 py-[7px] ${selectedOption === 'Learner' ? 'bg-white' : 'bg-[#dbe2ef]'} cursor-pointer justify-center items-center gap-2.5 inline-flex`}
-                        >
-                            <div className={`text-base font-semibold font-['Epilogue'] leading-relaxed ${selectedOption === 'Learner' ? 'text-[#3f72af]' : 'text-gray-500'}`}>Learner</div>
-                        </div>
-                        <div
-                            onClick={() => handleOptionChange('Admin')}
-                            className={`h-10 px-3 py-[7px] ${selectedOption === 'Admin' ? 'bg-white' : 'bg-[#dbe2ef]'} cursor-pointer justify-center items-center gap-2.5 inline-flex`}
-                        >
-                            <div className={`text-base font-semibold font-['Epilogue'] leading-relaxed ${selectedOption === 'Admin' ? 'text-[#3f72af]' : 'text-gray-500'}`}>Admin</div>
-                        </div>
-                    </div>
 
-                    <div className='flex justify-center pt-8'>
-                        {selectedOption === 'Learner' ? (
-                            <LearnerForm
-                                username={username}
-                                email={email}
-                                password={password}
-                                setUsername={setUsername}
-                                setEmail={setEmail}
-                                setPassword={setPassword}
-                                confirmPass={confirmPass}
-                                setConfirmPass={setConfirmPass}
-                                handleRegister={handleRegister}
-                                showPassword={showPassword}
-                                setShowPassword={setShowPassword}
-                                showConfirmPassword={showConfirmPassword}
-                                setShowConfirmPassword={setShowConfirmPassword}
-                            />
-                        ) : (
-                            <AdminForm
-                                username={username}
-                                email={email}
-                                password={password}
-                                setUsername={setUsername}
-                                setEmail={setEmail}
-                                setPassword={setPassword}
-                                confirmPass={confirmPass}
-                                setConfirmPass={setConfirmPass}
-                                handleRegister={handleRegister}
-                                showPassword={showPassword}
-                                setShowPassword={setShowPassword}
-                                showConfirmPassword={showConfirmPassword}
-                                setShowConfirmPassword={setShowConfirmPassword}
-                            />
-                        )}
-                    </div>
+                <div className='flex justify-center pt-8'>
+                    {selectedOption === 'Learner' ? (
+                        <LearnerForm
+                            username={username}
+                            email={email}
+                            password={password}
+                            setUsername={setUsername}
+                            setEmail={setEmail}
+                            setPassword={setPassword}
+                            confirmPass={confirmPass}
+                            setConfirmPass={setConfirmPass}
+                            handleRegister={handleRegister}
+                            showPassword={showPassword}
+                            setShowPassword={setShowPassword}
+                            showConfirmPassword={showConfirmPassword}
+                            setShowConfirmPassword={setShowConfirmPassword}
+                        />
+                    ) : (
+                        <AdminForm
+                            username={username}
+                            email={email}
+                            password={password}
+                            setUsername={setUsername}
+                            setEmail={setEmail}
+                            setPassword={setPassword}
+                            confirmPass={confirmPass}
+                            setConfirmPass={setConfirmPass}
+                            handleRegister={handleRegister}
+                            showPassword={showPassword}
+                            setShowPassword={setShowPassword}
+                            showConfirmPassword={showConfirmPassword}
+                            setShowConfirmPassword={setShowConfirmPassword}
+                        />
+                    )}
                 </div>
             </div>
             <Footer />
@@ -156,14 +160,14 @@ const Register = () => {
 // Job Seeker Form Component
 const LearnerForm = ({ username, email, password, confirmPass, setUsername, setEmail, setPassword, setConfirmPass, handleRegister, error, success, showPassword, setShowPassword, showConfirmPassword, setShowConfirmPassword }) => {
     return (
-        <div className='w-[550px] text-[#112d4e]'>
+        <div className='w-[550px] text-white bg-transparent'>
             <h2 className="text-center text-5xl font-semibold mb-6">Register as Learner</h2>
             <form onSubmit={handleRegister}>
                 <p className='pb-1'>Full Name</p>
                 <input
                     type="text"
                     placeholder="Full Name"
-                    className="w-full mb-6 p-2 border rounded"
+                    className="w-full p-3 bg-transparent border-2 border-white text-white placeholder-[#B0BEC5] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white focus:text-gray-900 rounded-lg"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                 />
@@ -171,7 +175,7 @@ const LearnerForm = ({ username, email, password, confirmPass, setUsername, setE
                 <input
                     type="email"
                     placeholder="Email Address"
-                    className="w-full mb-6 p-2 border rounded"
+                    className="w-full p-3 bg-transparent border-2 border-white text-white placeholder-[#B0BEC5] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white focus:text-gray-900 rounded-lg"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
@@ -180,13 +184,13 @@ const LearnerForm = ({ username, email, password, confirmPass, setUsername, setE
                     <input
                         type={showPassword ? 'text' : 'password'}
                         placeholder="Password"
-                        className="w-full p-2 border rounded"
+                        className="w-full p-3 bg-transparent border-2 border-white text-white placeholder-[#B0BEC5] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white focus:text-gray-900 rounded-lg"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <span
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
+                        className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-blue-800"
                     >
                         {showPassword ? <AiFillEyeInvisible size={24} /> : <AiFillEye size={24} />}
                     </span>
@@ -196,13 +200,13 @@ const LearnerForm = ({ username, email, password, confirmPass, setUsername, setE
                     <input
                         type={showConfirmPassword ? 'text' : 'password'}
                         placeholder="Enter Password Again"
-                        className="w-full p-2 border rounded"
+                        className="w-full p-3 bg-transparent border-2 border-white text-white placeholder-[#B0BEC5] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-[#F8F9FA] focus:text-gray-900 rounded-lg"
                         value={confirmPass}
                         onChange={(e) => setConfirmPass(e.target.value)}
                     />
                     <span
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
+                        className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-blue-800"
                     >
                         {showConfirmPassword ? <AiFillEyeInvisible size={24} /> : <AiFillEye size={24} />}
                     </span>
@@ -214,7 +218,7 @@ const LearnerForm = ({ username, email, password, confirmPass, setUsername, setE
                 {success && <p className="text-green-500">{success}</p>}
             </form>
             <div className="mt-2 flex">
-                <p className="text-base text-[#112d4e]">Already Have an Account?</p>
+                <p className="text-base text-white">Already Have an Account?</p>
                 <Link to="/Login">
                     <p className="text-blue-400 hover:underline pl-[4px]">Login</p>
                 </Link>
@@ -225,14 +229,14 @@ const LearnerForm = ({ username, email, password, confirmPass, setUsername, setE
 // Company Form Component
 const AdminForm = ({ username, email, password, confirmPass, setUsername, setEmail, setPassword, setConfirmPass, handleRegister, error, success, showPassword, setShowPassword, showConfirmPassword, setShowConfirmPassword }) => {
     return (
-        <div className='w-[550px] text-[#112d4e]'>
+        <div className='w-[550px] text-white'>
             <h2 className="text-center text-5xl font-semibold mb-6">Register as Admin</h2>
             <form onSubmit={handleRegister}>
                 <p className='pb-1'>Full Name</p>
                 <input
                     type="text"
                     placeholder="Full Name"
-                    className="w-full mb-6 p-2 border rounded"
+                    className="w-full p-3 bg-transparent border-2 border-white text-white placeholder-[#B0BEC5] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-[#F8F9FA] focus:text-gray-900 rounded-lg"
                     value={username}
                     onChange={(e) => setName(e.target.value)}
                 />
@@ -240,15 +244,7 @@ const AdminForm = ({ username, email, password, confirmPass, setUsername, setEma
                 <input
                     type="email"
                     placeholder="Email Address"
-                    className="w-full mb-6 p-2 border rounded"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <p className='pb-1'>Enter UID No..</p>
-                <input
-                    type="email"
-                    placeholder="Email Address"
-                    className="w-full mb-6 p-2 border rounded"
+                    className="w-full p-3 bg-transparent border-2 border-white text-white placeholder-[#B0BEC5] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-[#F8F9FA] focus:text-gray-900 rounded-lg"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
@@ -257,13 +253,13 @@ const AdminForm = ({ username, email, password, confirmPass, setUsername, setEma
                     <input
                         type={showPassword ? 'text' : 'password'}
                         placeholder="Password"
-                        className="w-full p-2 border rounded"
+                        className="w-full p-3 bg-transparent border-2 border-white text-white placeholder-[#B0BEC5] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-[#F8F9FA] focus:text-gray-900 rounded-lg"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <span
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
+                        className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-blue-800"
                     >
                         {showPassword ? <AiFillEyeInvisible size={24} /> : <AiFillEye size={24} />}
                     </span>
@@ -273,13 +269,13 @@ const AdminForm = ({ username, email, password, confirmPass, setUsername, setEma
                     <input
                         type={showConfirmPassword ? 'text' : 'password'}
                         placeholder="Enter Password Again"
-                        className="w-full p-2 border rounded"
+                       className="w-full p-3 bg-transparent border-2 border-white text-white placeholder-[#B0BEC5] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-[#F8F9FA] focus:text-gray-900 rounded-lg"
                         value={confirmPass}
                         onChange={(e) => setConfirmPass(e.target.value)}
                     />
                     <span
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
+                        className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-blue-800"
                     >
                         {showConfirmPassword ? <AiFillEyeInvisible size={24} /> : <AiFillEye size={24} />}
                     </span>
