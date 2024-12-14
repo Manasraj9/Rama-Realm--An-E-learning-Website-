@@ -27,7 +27,7 @@ const About = () => {
   return (
     <div id='about' className='min-h-screen w-screen'>
          <div className='relative mb-8 mt-36 flex flex-col items-center gap-5'>
-              <h2 className='font-general text-sm uppercase md:text-[10px]'>Welcome to Rama Realm</h2>
+              <h2 className='font-general text-sm uppercase md:text-[16px]'>Welcome to Rama Realm</h2>
               <AnimatedTitle
                title="A Uni<b>q</b>ue World <br />where lea<b>r</b>ning Comes Alive"
                containerClass="mt-5 !text-black text-center"

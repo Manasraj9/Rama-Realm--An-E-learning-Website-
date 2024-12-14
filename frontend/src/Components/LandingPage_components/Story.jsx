@@ -29,8 +29,8 @@ const Story = () => {
            const centerX = rect.width / 2;
            const centerY = rect.height /2;
            
-           const rotateX = ((y - centerY)/ centerY) * -10;
-           const rotateY = ((x - centerX)/ centerX) * 10;
+           const rotateX = ((y - centerY)/ centerY) * -7;
+           const rotateY = ((x - centerX)/ centerX) * 7;
 
            gsap.to(element , {
                   duration:0.1,
@@ -49,7 +49,7 @@ const Story = () => {
                   <AnimatedTitle
                    title="A Uni<b>q</b>ue World <br />where lea<b>r</b>ning Comes Alive"
                    sectionId="#story"
-                   containerClass="mt-5 pointer-events-none mix-blend-difference relative z-10"
+                   containerClass="mt-5 mb-7 pointer-events-none mix-blend-difference relative z-10"
                   />
                   <div className='story-img-container'>
                      <div className='story-img-mask'>

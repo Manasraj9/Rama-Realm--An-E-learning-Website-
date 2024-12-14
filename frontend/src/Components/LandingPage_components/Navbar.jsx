@@ -59,15 +59,14 @@ const Navbar = () => {
        <header className='absolute top-1/2 w-full -translate-y-1/2'>
             <nav className='flex items-center size-full justify-between p-4'>
                   <div className='flex items-center gap-7'>
-                       <img src="/img/Logo1.svg" alt="logo" className='w-24'/>
-                       <Button
+                       <img src="/img/Logo1.svg" alt="logo" className='w-32'/> 
+                  </div>
+                  <div className='flex h-full items-center'>
+                  <Button
                        id="Course-button"
                        title = "Courses"
                        rightIcon={<GrMultimedia />}
-                       containerClass="bg-blue-50 text-black md:flex hidden items-center justify-center gap-1"
-                       />
-                  </div>
-                  <div className='flex h-full items-center'>
+                       containerClass="bg-blue-50 text-black md:flex hidden items-center justify-center gap-1" />
                        <div className='hidden md:block'>
                            {navItems.map((item)=>(
                                     <a key={item} href={`#${item.toLowerCase()}`} className='nav-hover-btn'>

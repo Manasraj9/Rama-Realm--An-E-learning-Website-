@@ -37,7 +37,7 @@ body {
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem
+    --radius: 0.6rem
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -79,23 +79,23 @@ body {
 @layer base {
   @font-face {
    font-family:'circular-web';
-   src: url('/frontend/public/fonts/circularweb-book.woff2') format("woff2");
+   src: url('/fonts/circularweb-book.woff2') format("woff2");
   }
   @font-face {
    font-family: 'general';
-   src: url('/frontend/public/fonts/general.woff2') format("woff2");
+   src: url('/fonts/general.woff2') format("woff2");
   }
   @font-face {
    font-family: 'robert-medium';
-   src: url('/frontend/public/fonts/robert-medium.woff2') format("woff2");
+   src: url('/fonts/robert-medium.woff2') format("woff2");
   }
   @font-face {
    font-family: 'robert-regular';
-   src: url('/frontend/public/fonts/robert-regular.woff2')format("woff2");
+   src: url('/fonts/robert-regular.woff2')format("woff2");
   }
   @font-face {
    font-family: 'zentry';
-   src: url('/frontend/public/fonts/zentry-regular.woff2')format("woff2");
+   src: url('/fonts/zentry-regular.woff2')format("woff2");
   }
 }
 
@@ -107,7 +107,10 @@ body {
     @apply ease-[cubic-bezier(0.65, 0.05, 0.36, 1)];
   }
   .nav-hover-btn {
-    @apply relative ms-10 font-general text-xs uppercase text-blue-50 after:absolute after:-bottom-0.5 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-neutral-100 after:transition after:duration-300 after:ease-custom-ease hover:after:origin-bottom-left hover:after:scale-x-100 dark:after:bg-white cursor-pointer;
+    @apply relative ms-10 font-general text-base uppercase text-blue-50 after:absolute after:-bottom-0.5 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-neutral-100 after:transition after:duration-300 after:ease-custom-ease hover:after:origin-bottom-left hover:after:scale-x-100 dark:after:bg-white cursor-pointer;
+  }
+  .nav-hover-btn_learner {
+    @apply relative ms-10 font-general text-base uppercase text-blue-200 after:absolute after:-bottom-0.5 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-neutral-800 after:transition after:duration-300 after:ease-custom-ease hover:after:origin-bottom-left hover:after:scale-x-100 dark:after:bg-white cursor-pointer;
   }
 
   .floating-nav {
@@ -134,9 +137,13 @@ body {
   .hero-heading {
     @apply uppercase font-zentry font-black text-5xl sm:right-10 sm:text-7xl md:text-9xl lg:text-[6rem];
   }
+  
+  .hero-heading_2 {
+    @apply uppercase font-zentry font-black text-5xl sm:right-10 sm:text-7xl md:text-9xl lg:text-[5rem];
+  }
 
   .about-subtext {
-    @apply absolute bottom-[-87dvh] left-1/2 w-full max-w-96 -translate-x-1/2 text-center font-circular-web text-lg md:max-w-[34rem];
+    @apply absolute bottom-[-87dvh] left-1/2 w-full max-w-96 -translate-x-1/2 text-center font-circular-web text-xl md:max-w-[34rem];
   }
 
   .about-image {
@@ -207,7 +214,7 @@ body {
 }
 
 .indicator-line {
-  @apply h-1 w-px rounded-full bg-white transition-all duration-200 ease-in-out;
+  @apply h-2 w-2 rounded-full bg-white transition-all duration-200 ease-in-out;
 }
 
 .indicator-line.active {
