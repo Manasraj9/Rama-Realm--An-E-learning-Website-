@@ -1,6 +1,6 @@
 import {gsap} from 'gsap'
 import { useGSAP } from '@gsap/react'
-import React from 'react'
+// import { ReactTyped } from 'react-typed'   
 import { ScrollTrigger } from 'gsap/all'
 import AnimatedTitle from './AnimatedTitle'
 

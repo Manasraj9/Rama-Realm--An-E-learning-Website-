@@ -110,11 +110,15 @@ body {
     @apply relative ms-10 font-general text-base uppercase text-blue-50 after:absolute after:-bottom-0.5 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-neutral-100 after:transition after:duration-300 after:ease-custom-ease hover:after:origin-bottom-left hover:after:scale-x-100 dark:after:bg-white cursor-pointer;
   }
   .nav-hover-btn_learner {
-    @apply relative ms-10 font-general text-base uppercase text-blue-200 after:absolute after:-bottom-0.5 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-neutral-800 after:transition after:duration-300 after:ease-custom-ease hover:after:origin-bottom-left hover:after:scale-x-100 dark:after:bg-white cursor-pointer;
+    @apply relative ms-10 font-general text-base uppercase text-blue-400 after:absolute after:-bottom-0.5 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-gradient-to-r from-indigo-600 to-blue-400 after:transition after:duration-300 after:ease-custom-ease hover:after:origin-bottom-left hover:after:scale-x-100 dark:after:bg-white cursor-pointer hover:text-violet-500;
   }
 
   .floating-nav {
     @apply bg-black rounded-lg border;
+  }
+  
+  .floating-nav-sec {
+    @apply bg-black rounded-lg border text-white;
   }
 
   .absolute-center {

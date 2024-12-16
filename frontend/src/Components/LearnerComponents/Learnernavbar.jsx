@@ -16,13 +16,13 @@ const Learnernavbar = () => {
          useEffect(()=>{
              if (currentScrollY === 0) {
                   setIsNavVisible(true)
-                  NavContainerRef.current.classList.remove('floating-nav');
+                  NavContainerRef.current.classList.remove('floating-nav-sec');
              }else if(currentScrollY > lastScrollY){
                   setIsNavVisible(false);
-                  NavContainerRef.current.classList.add('floating-nav');
+                  NavContainerRef.current.classList.add('floating-nav-sec');
              }else if(currentScrollY < lastScrollY){
                   setIsNavVisible(true);
-                  NavContainerRef.current.classList.add('floating-nav');
+                  NavContainerRef.current.classList.add('floating-nav-sec');
              }
              setLastScrollY(currentScrollY);
          },[currentScrollY, lastScrollY])
@@ -31,7 +31,7 @@ const Learnernavbar = () => {
             gsap.to(NavContainerRef.current, {
                  y: isNavVisible ? 0 : -100,
                  opacity: isNavVisible ? 1 : 0,
-                 duration: 0.2,    
+                 duration: 0.1,    
             })
          },[isNavVisible])
 
