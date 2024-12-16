@@ -24,7 +24,7 @@ import {
 const AdminHomepage = () => {
     const sidebarItems = [
         { text: 'Dashboard', icon: <DashboardIcon />, path: '/Admin' },
-        { text: 'Messages', icon: <MessageIcon />, path: '/notifications/${companyId}' },
+        { text: 'Notification', icon: <MessageIcon />, path: '/notifications' },
         { text: 'Rating', icon: <AccountBoxIcon />, path: '/Companyprofile' },
         { text: 'Courses', icon: <WorkIcon />, path: '/joblisting' },
         { text: 'Revenue', icon: <WorkIcon />, path: '/joblisting' },
