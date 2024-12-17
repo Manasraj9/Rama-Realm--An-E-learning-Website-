@@ -7,19 +7,19 @@ import { toast } from 'react-toastify';
 import { Dashboard, Message, Settings, Help, AccountBalance, AutoStories,StarBorderPurple500, ManageAccounts }  from '@mui/icons-material';
 import {Box,List,ListItem,ListItemIcon,ListItemText,Divider,} from '@mui/material';
 
-const Rating = () => {
+const Helpcenter = () => {
     const location = useLocation(); // Get the current route
       const navigate = useNavigate(); // Navigate programmatically
-    const sidebarItems = [
-            { text: 'Dashboard', icon: <Dashboard />, path: '/Admin' },
-            { text: 'Notification', icon: <Message />, path: '/NotificationAdmin' },
-            { text: 'Rating', icon: <StarBorderPurple500 />, path: '/RatingAdmin' },
-            { text: 'Courses', icon: <AutoStories />, path: '/CoursesAdmin' },
-            { text: 'Revenue', icon: <AccountBalance />, path: '/RevenueAdmin' },
-            { text: 'User Management', icon: <ManageAccounts />, path: '/UserManagement' },
-            { text: 'Settings', icon: <Settings />, path: '/Adminsettings' },
-            { text: 'Help Center', icon: <Help />, path: '/HelpCenterAdmin' },
-          ];
+   const sidebarItems = [
+           { text: 'Dashboard', icon: <Dashboard />, path: '/Admin' },
+           { text: 'Notification', icon: <Message />, path: '/NotificationAdmin' },
+           { text: 'Rating', icon: <StarBorderPurple500 />, path: '/RatingAdmin' },
+           { text: 'Courses', icon: <AutoStories />, path: '/CoursesAdmin' },
+           { text: 'Revenue', icon: <AccountBalance />, path: '/RevenueAdmin' },
+           { text: 'User Management', icon: <ManageAccounts />, path: '/UserManagement' },
+           { text: 'Settings', icon: <Settings />, path: '/Adminsettings' },
+           { text: 'Help Center', icon: <Help />, path: '/HelpCenterAdmin' },
+         ];
   return (
     <div>
          {/* Navbar */}
@@ -73,4 +73,4 @@ const Rating = () => {
   )
 }
 
-export default Rating
+export default Helpcenter

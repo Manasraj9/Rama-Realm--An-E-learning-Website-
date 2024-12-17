@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { Dashboard, Message, Settings, Help, AccountBalance, AutoStories,StarBorderPurple500, ManageAccounts }  from '@mui/icons-material';
 import {Box,List,ListItem,ListItemIcon,ListItemText,Divider,} from '@mui/material';
 
-const Rating = () => {
+const RevenueAdmin = () => {
     const location = useLocation(); // Get the current route
       const navigate = useNavigate(); // Navigate programmatically
     const sidebarItems = [
@@ -73,4 +73,4 @@ const Rating = () => {
   )
 }
 
-export default Rating
+export default RevenueAdmin

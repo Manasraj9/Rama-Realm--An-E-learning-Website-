@@ -7,9 +7,10 @@ import { toast } from 'react-toastify';
 import { Dashboard, Message, Settings, Help, AccountBalance, AutoStories,StarBorderPurple500, ManageAccounts }  from '@mui/icons-material';
 import {Box,List,ListItem,ListItemIcon,ListItemText,Divider,} from '@mui/material';
 
-const Rating = () => {
+const CoursesAdmin = () => {
     const location = useLocation(); // Get the current route
       const navigate = useNavigate(); // Navigate programmatically
+
     const sidebarItems = [
             { text: 'Dashboard', icon: <Dashboard />, path: '/Admin' },
             { text: 'Notification', icon: <Message />, path: '/NotificationAdmin' },
@@ -25,6 +26,7 @@ const Rating = () => {
          {/* Navbar */}
          <Navbar />
 
+{/* Content Section with Sidebar and Main Content */}
 {/* Content Section with Sidebar and Main Content */}
    <div className="flex flex-grow">
         {/* Sidebar */}
@@ -73,4 +75,4 @@ const Rating = () => {
   )
 }
 
-export default Rating
+export default CoursesAdmin

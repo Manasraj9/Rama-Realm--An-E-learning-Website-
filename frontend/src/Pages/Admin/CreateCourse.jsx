@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Revenue = () => {
+const CreateCourse = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const Revenue = () => {
   )
 }
 
-export default Revenue
+export default CreateCourse

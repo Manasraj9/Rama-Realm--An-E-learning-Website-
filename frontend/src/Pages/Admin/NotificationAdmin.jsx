@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { Dashboard, Message, Settings, Help, AccountBalance, AutoStories,StarBorderPurple500, ManageAccounts }  from '@mui/icons-material';
 import {Box,List,ListItem,ListItemIcon,ListItemText,Divider,} from '@mui/material';
 
-const Rating = () => {
+const NotificationAdmin = () => {
     const location = useLocation(); // Get the current route
       const navigate = useNavigate(); // Navigate programmatically
     const sidebarItems = [
@@ -20,10 +20,10 @@ const Rating = () => {
             { text: 'Settings', icon: <Settings />, path: '/Adminsettings' },
             { text: 'Help Center', icon: <Help />, path: '/HelpCenterAdmin' },
           ];
-  return (
-    <div>
-         {/* Navbar */}
-         <Navbar />
+    return (
+        <div>
+            {/* Navbar */}
+            <Navbar />
 
 {/* Content Section with Sidebar and Main Content */}
    <div className="flex flex-grow">
@@ -64,13 +64,13 @@ const Rating = () => {
 
           <Divider />
         </Box>
-</div>
+            </div>
 
-{/* Footer */}
-<Footer />
-      
-    </div>
-  )
+            {/* Footer */}
+            <Footer />
+
+        </div>
+    )
 }
 
-export default Rating
+export default NotificationAdmin
