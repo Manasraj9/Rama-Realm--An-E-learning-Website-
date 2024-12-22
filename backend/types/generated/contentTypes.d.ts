@@ -362,6 +362,56 @@ export interface AdminUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiCreateCourseCreateCourse extends Schema.CollectionType {
+  collectionName: 'create_courses';
+  info: {
+    description: '';
+    displayName: 'Create Course';
+    pluralName: 'create-courses';
+    singularName: 'create-course';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Course_Activity: Attribute.Boolean & Attribute.DefaultTo<false>;
+    Course_Description: Attribute.Text & Attribute.Required;
+    Course_Difficulty: Attribute.Enumeration<
+      ['Beginner', 'Intermediate', 'Advanced']
+    > &
+      Attribute.Required;
+    Course_Duration: Attribute.Integer & Attribute.Required;
+    Course_Notes: Attribute.Media<'images' | 'files'> & Attribute.Required;
+    Course_Subject: Attribute.String & Attribute.Required;
+    Course_Title: Attribute.String &
+      Attribute.Required &
+      Attribute.SetMinMaxLength<{
+        minLength: 8;
+      }>;
+    Course_trailer: Attribute.Media<'videos'> & Attribute.Required;
+    Course_VR_link: Attribute.String &
+      Attribute.Required &
+      Attribute.SetMinMaxLength<{
+        minLength: 10;
+      }>;
+    createdAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::create-course.create-course',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    publishedAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    updatedBy: Attribute.Relation<
+      'api::create-course.create-course',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiLearnerDataLearnerData extends Schema.CollectionType {
   collectionName: 'learners_data';
   info: {
@@ -856,6 +906,7 @@ declare module '@strapi/types' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::create-course.create-course': ApiCreateCourseCreateCourse;
       'api::learner-data.learner-data': ApiLearnerDataLearnerData;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

@@ -36,7 +36,10 @@ const Login = () => {
                 localStorage.setItem('loginTime', new Date().getTime());
 
                 toast.success('Login successful!');
+                const token = localStorage.getItem('token');
 
+// Print it to the console
+console.log( token);
                 // Redirect based on userType
                 if (data.user.userType === 'Admin') {
                     navigate('/Admin'); // Admin homepage

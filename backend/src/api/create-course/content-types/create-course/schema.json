@@ -1,0 +1,68 @@
+{
+  "kind": "collectionType",
+  "collectionName": "create_courses",
+  "info": {
+    "singularName": "create-course",
+    "pluralName": "create-courses",
+    "displayName": "Create Course",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Course_Title": {
+      "type": "string",
+      "required": true,
+      "minLength": 8
+    },
+    "Course_Description": {
+      "type": "text",
+      "required": true
+    },
+    "Course_Subject": {
+      "type": "string",
+      "required": true
+    },
+    "Course_trailer": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "videos"
+      ]
+    },
+    "Course_Notes": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "Course_VR_link": {
+      "type": "string",
+      "required": true,
+      "minLength": 10
+    },
+    "Course_Duration": {
+      "type": "integer",
+      "required": true
+    },
+    "Course_Activity": {
+      "type": "boolean",
+      "default": false
+    },
+    "Course_Difficulty": {
+      "type": "enumeration",
+      "enum": [
+        "Beginner",
+        "Intermediate",
+        "Advanced"
+      ],
+      "required": true
+    }
+  }
+}

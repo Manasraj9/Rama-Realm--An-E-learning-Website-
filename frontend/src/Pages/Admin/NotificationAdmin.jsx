@@ -6,26 +6,26 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Dashboard, Message, Settings, Help, AccountBalance, AutoStories,StarBorderPurple500, ManageAccounts }  from '@mui/icons-material';
 import {Box,List,ListItem,ListItemIcon,ListItemText,Divider,} from '@mui/material';
-const AdminHomepage = () => {
-  const location = useLocation(); // Get the current route
-  const navigate = useNavigate(); // Navigate programmatically
 
+const NotificationAdmin = () => {
+    const location = useLocation(); // Get the current route
+      const navigate = useNavigate(); // Navigate programmatically
     const sidebarItems = [
-        { text: 'Dashboard', icon: <Dashboard />, path: '/Admin' },
-        { text: 'Notification', icon: <Message />, path: '/NotificationAdmin' },
-        { text: 'Rating', icon: <StarBorderPurple500 />, path: '/RatingAdmin' },
-        { text: 'Courses', icon: <AutoStories />, path: '/CoursesAdmin' },
-        { text: 'Revenue', icon: <AccountBalance />, path: '/RevenueAdmin' },
-        { text: 'User Management', icon: <ManageAccounts />, path: '/UserManagement' },
-        { text: 'Settings', icon: <Settings />, path: '/Adminsettings' },
-        { text: 'Help Center', icon: <Help />, path: '/HelpCenterAdmin' },
-      ];
-  return (
-    <div>
-    {/* Navbar */}
-    <Navbar />
+            { text: 'Dashboard', icon: <Dashboard />, path: '/Admin' },
+            { text: 'Notification', icon: <Message />, path: '/NotificationAdmin' },
+            { text: 'Rating', icon: <StarBorderPurple500 />, path: '/RatingAdmin' },
+            { text: 'Courses', icon: <AutoStories />, path: '/CoursesAdmin' },
+            { text: 'Revenue', icon: <AccountBalance />, path: '/RevenueAdmin' },
+            { text: 'User Management', icon: <ManageAccounts />, path: '/UserManagement' },
+            { text: 'Settings', icon: <Settings />, path: '/Adminsettings' },
+            { text: 'Help Center', icon: <Help />, path: '/HelpCenterAdmin' },
+          ];
+    return (
+        <div>
+            {/* Navbar */}
+            <Navbar />
 
-   {/* Content Section with Sidebar and Main Content */}
+{/* Content Section with Sidebar and Main Content */}
    <div className="flex flex-grow">
         {/* Sidebar */}
         <Box
@@ -49,7 +49,7 @@ const AdminHomepage = () => {
                 key={item.text}
                 onClick={() => navigate(item.path)} // Navigate to the route without reloading
                 sx={{
-                  cursor: 'pointer',
+                    cursor: 'pointer',
                   color: location.pathname === item.path ? 'blue' : 'inherit', // Highlight the active item
                   backgroundColor: location.pathname === item.path ? 'rgba(0, 0, 255, 0.1)' : 'transparent',
                 }}
@@ -64,18 +64,13 @@ const AdminHomepage = () => {
 
           <Divider />
         </Box>
+            </div>
 
-      {/* Main Content */}
-      <div className="flex-grow p-4">
-        <Dash_board />
-      </div>
-    </div>
+            {/* Footer */}
+            <Footer />
 
-    {/* Footer */}
-    <Footer />
-  </div>
-  )
+        </div>
+    )
 }
 
-export default AdminHomepage
-
+export default NotificationAdmin

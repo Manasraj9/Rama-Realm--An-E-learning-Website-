@@ -232,13 +232,13 @@ const AdminForm = ({ username, email, password, confirmPass, setUsername, setEma
         <div className='w-[550px] text-white'>
             <h2 className="text-center text-5xl font-semibold mb-6">Register as Admin</h2>
             <form onSubmit={handleRegister}>
-                <p className='pb-1'>Full Name</p>
+            <p className='pb-1'>Full Name</p>
                 <input
                     type="text"
                     placeholder="Full Name"
-                    className="w-full p-3 bg-transparent border-2 border-white text-white placeholder-[#B0BEC5] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-[#F8F9FA] focus:text-gray-900 rounded-lg"
+                    className="w-full p-3 bg-transparent border-2 border-white text-white placeholder-[#B0BEC5] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white focus:text-gray-900 rounded-lg"
                     value={username}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => setUsername(e.target.value)}
                 />
                 <p className='pb-1'>Enter Email Address</p>
                 <input
