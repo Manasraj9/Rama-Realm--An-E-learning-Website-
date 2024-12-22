@@ -6,11 +6,11 @@ const Learner_hero = () => {
   const typedRef = useRef(null);
   useEffect(() => {
      typedRef.current = new Typed(heroRef.current, {
-      strings: ["Discover new skills and knowledge with our interactive courses"],
+      strings: ["Discover new skills and knowledge with our interactive courses","Completely interactive Virtual Reality Experience","Learn from industry experts and experts in their field"],
       startDelay: 150,
-      typeSpeed: 95,
-      backSpeed: 80,
-      backDelay: 50,
+      typeSpeed: 60,
+      backSpeed: 70,
+      backDelay: 70,
       showCursor: false,
       cursorChar: "!",
       loop: true
@@ -19,10 +19,9 @@ const Learner_hero = () => {
       typedRef.current.destroy();
     };
   }, []);
-
   return (
     <>
-    <div className="bg-violet-500 absolute h-3/5 w-full top-[4.9rem]">
+    <div className="bg-violet-300 h-3/5 mt-20 w-full">
     <div>
       <div className="mx-auto mt-5 pt-7 pb-32 flex justify-center items-center flex-col text-center ">
         <h1 className=" drop-shadow-lg hero-heading_2 text-gray-900 special-font mb-5"><b>w</b>elcome to <b>O</b>ur Platfor<b>m</b></h1>
@@ -33,7 +32,7 @@ const Learner_hero = () => {
         <div className="px-5 py-5">
           <button className="bg-blue-50 text-black font-medium font-circular-web py-3 px-5 shadow-lg rounded-full block hover:text-violet-500 md:inline-block mx-auto md:mx-0">Explore Courses</button>
         </div>
-        <p ref={heroRef} className="text-lg drop-shadow-xl font-general text-white w-5/6 mt-6"></p>
+        <p ref={heroRef} className="text-lg drop-shadow-xl font-robert-medium text-white w-5/6 mt-6"></p>
       </div>
     </div>
   </div>

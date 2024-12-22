@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -22,8 +23,9 @@ const SearchBar = ({ onSearch }) => {
       />
       <button
         onClick={handleSearch}
-        className="px-5 py-3 shadow-lg bg-indigo-700 text-white rounded-full hover:bg-white hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="flex items-center gap-2 px-5 py-3 shadow-lg bg-gradient-to-tr from-cyan-600 to-indigo-300  text-white rounded-full hover:bg-white hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
+        <FaMagnifyingGlass />    
        Search
       </button>
     </div>
