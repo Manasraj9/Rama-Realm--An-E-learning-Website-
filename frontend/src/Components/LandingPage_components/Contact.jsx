@@ -1,4 +1,3 @@
-import React from 'react'
 import Button from './Button'
 import AnimatedTitle from './AnimatedTitle'
 
@@ -35,11 +34,11 @@ const Contact = () => {
              />
          </div>
          <div className='flex flex-col items-center text-center'>
-           <p className='font-general text-[10px] uppercase'>Enter Our Rama-Realm</p>
+           <p className='font-general text-[20px] uppercase'>Enter Our Rama-Realm</p>
            <AnimatedTitle
-            title="Lorem ipsum dolor sit adipisicing."
+            title="Join <b>a</b> World <br />Full of joyfull lear<b>N</b>ing"
             sectionId="#contact"
-            containerClass='special-font mt-10 w-full font-zentry text-5xl leading-[0.9] md:text-[6rem]'
+            containerClass='special-font mix-blend-difference z-10 mt-10 w-full font-zentry text-5xl leading-[0.9] md:text-[6rem]'
            />
            <Button title="contact us" containerClass="mt-10 cursor-pointer"/>
          </div>
@@ -49,3 +48,4 @@ const Contact = () => {
 }
 
 export default Contact
+
