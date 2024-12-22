@@ -32,7 +32,7 @@ const Learner_hero = () => {
         <div className="px-5 py-5">
           <button className="bg-blue-50 text-black font-medium font-circular-web py-3 px-5 shadow-lg rounded-full block hover:text-violet-500 md:inline-block mx-auto md:mx-0">Explore Courses</button>
         </div>
-        <p ref={heroRef} className="text-lg drop-shadow-xl font-robert-medium text-white w-5/6 mt-6"></p>
+        <p ref={heroRef} className="text-lg h-3 drop-shadow-xl font-robert-medium text-white w-5/6 mt-6"></p>
       </div>
     </div>
   </div>
