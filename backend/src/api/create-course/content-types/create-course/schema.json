@@ -63,6 +63,14 @@
         "Advanced"
       ],
       "required": true
+    },
+    "Course_State": {
+      "type": "enumeration",
+      "enum": [
+        "Draft",
+        "Published"
+      ],
+      "default": "Published"
     }
   }
 }
