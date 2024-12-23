@@ -382,6 +382,8 @@ export interface ApiCreateCourseCreateCourse extends Schema.CollectionType {
       Attribute.Required;
     Course_Duration: Attribute.Integer & Attribute.Required;
     Course_Notes: Attribute.Media<'images' | 'files'> & Attribute.Required;
+    Course_State: Attribute.Enumeration<['Draft', 'Published']> &
+      Attribute.DefaultTo<'Published'>;
     Course_Subject: Attribute.String & Attribute.Required;
     Course_Title: Attribute.String &
       Attribute.Required &
