@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../../Components/Bars/Navbar_Admin';
 import Footer from '../../Components/HomePage_components/Footer';
-import { Box, Card, CardContent, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, List, ListItem, ListItemIcon, ListItemText, Divider } from '@mui/material';
+import { Box, Card, CardContent, Typography, Button, Dialog, DialogActions, DialogContent, Switch, FormControlLabel, DialogTitle, TextField, List, ListItem, ListItemIcon, ListItemText, Divider } from '@mui/material';
 import { Dashboard, Message, Settings, Help, AccountBalance, AutoStories, StarBorderPurple500, ManageAccounts } from '@mui/icons-material';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -15,36 +15,82 @@ const CoursesAdmin = () => {
   const [courseUpdates, setCourseUpdates] = useState([]); // Start with an empty array
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
-
   const API_URL = "http://localhost:1337/api/create-courses"; // Update with your Strapi URL
   const location = useLocation(); // Get the current route
   const navigate = useNavigate(); // Navigate programmatically
+  const [isPublished, setIsPublished] = useState(true); // Default state: Published
 
-  // Fetch courses from the API
+  const handlePublishToggle = async (courseId, currentState) => {
+    const newState = currentState === "Published" ? "Draft" : "Published"; // Toggle logic
+    
+    try {
+      const response = await axios.put(`http://localhost:1337/api/create-courses/${courseId}`, {
+        data: {
+          Course_State: newState,  // Update the course state
+        },
+      });
+  
+      console.log("Course state updated:", response.data);
+      toast.success(`Course ${newState} successfully!`);
+      fetchCourses(); // Refresh the course list after updating the state
+    } catch (error) {
+      console.error("Error updating course state:", error);
+      toast.error("Failed to update course state.");
+    }
+  };
+  
+
   const fetchCourses = async () => {
     setIsLoading(true);
     try {
       const response = await axios.get('http://localhost:1337/api/create-courses', {
         params: {
-          populate: ['trailer', 'notes'], // Ensuring trailer and notes are populated
-        }
+          populate: ['Course_trailer', 'Course_Notes'], // Include related media
+        },
       });
 
-      console.log(response.data); // Log to verify the response structure
+      const courses = response.data.data || [];
+      const enrichedCourses = await Promise.all(
+        courses.map(async (course) => {
+          const trailerId = course.attributes.Course_trailer?.data?.id;
+          const notesData = course.attributes.Course_Notes?.data;
 
-      // Ensure response contains data and it's an array
-      const courses = Array.isArray(response.data.data) ? response.data.data : [];
-      setCourseUpdates(courses); // Set the courses in state
+          // Handle notes safely
+          const notesIds = Array.isArray(notesData)
+            ? notesData.map(note => note.id) // Extract IDs if it's an array
+            : notesData
+              ? [notesData.id] // Wrap a single object in an array
+              : []; // Default to an empty array
 
+          // Fetch trailer details
+          const trailer = trailerId
+            ? await axios.get(`http://localhost:1337/api/upload/files/${trailerId}`)
+            : null;
+
+          // Fetch notes details
+          const notes = notesIds.length
+            ? await Promise.all(
+              notesIds.map(id => axios.get(`http://localhost:1337/api/upload/files/${id}`))
+            )
+            : [];
+
+          return {
+            ...course,
+            trailer: trailer?.data || null,
+            notes: notes.map(noteResponse => noteResponse.data),
+            state: course.attributes.State || "Draft",
+          };
+        })
+      );
+
+      setCourseUpdates(enrichedCourses); // Store enriched courses
     } catch (error) {
       console.error('Error fetching courses:', error);
-      toast.error("Failed to fetch courses.");
+      toast.error('Failed to fetch courses.');
     } finally {
       setIsLoading(false);
     }
   };
-
-
 
   // Handle file upload
   const handleFileUpload = async (file) => {
@@ -175,11 +221,11 @@ const CoursesAdmin = () => {
 
         <div className="flex-grow p-4">
           <Typography variant="h4" sx={{ marginTop: '20px' }}>Course Listings</Typography>
-          <div className="flex flex-wrap gap-2.5 mt-5 ml-10">
+          <div className="flex flex-wrap gap-2.5 mt-5 ml-5">
             {Array.isArray(courseUpdates) && courseUpdates.length > 0 ? (
               courseUpdates.map((course) => (
-                <Card key={course.id} sx={{ marginBottom: '20px', width: '53vh' }}>
-                  <CardContent>
+                <Card key={course.id} className='max-w-80'>
+                  <CardContent className='min-w-50'>
                     <Typography variant="h4">{course.attributes.Course_Title || 'No title available'}</Typography>
                     <Typography variant="body2">
                       Duration: {course.attributes.Course_Duration || 'N/A'} Hours
@@ -187,29 +233,22 @@ const CoursesAdmin = () => {
                     <Typography variant="body2">
                       Description: {course.attributes.Course_Description || 'No description available'}
                     </Typography>
-
-
-
-                    <Typography variant="body2">Trailer:
-                      <video controls width="100%">
-                        <source src={course.attributes.Course_trailer} type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
+                    <Typography variant="body2">
+                      Subject: {course.attributes.Course_Subject || 'No description available'}
                     </Typography>
-
-
-
-                    {/* Display the course notes */}
-                    {course.attributes.notes && (
-                      <div>
-                        <Typography variant="body2">Notes:</Typography>
-                        <ul>
-                          {course.attributes.notes.map((note, index) => (
-                            <li key={index}>{note}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    {/* Publish/Unpublish Toggle */}
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={course.attributes.Course_State === "Published"} // Check if the course is published
+                          onChange={() => handlePublishToggle(course.id, course.attributes.Course_State)} // Pass the course ID and current state
+                          color="primary"
+                          name="publishSwitch"
+                          inputProps={{ 'aria-label': 'publish-unpublish toggle' }}
+                        />
+                      }
+                      label={course.attributes.Course_State === "Published" ? "Published" : "Draft"} // Display the correct label
+                    />
 
                     <div className="flex justify-between items-center mt-3">
                       <button
