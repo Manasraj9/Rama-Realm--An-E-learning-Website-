@@ -4,12 +4,14 @@ import Button from './Button'
 import { GrMultimedia } from "react-icons/gr";
 import { useWindowScroll } from 'react-use'
 import gsap from 'gsap';
+import { Link } from "react-router-dom"; 
 const navItems = ['Features','Story','About','Contact']
 const Navbar = () => {
          const [isAudioIndicatorActive, setIsAudioIndicatorActive] = useState(false)
          const [isAudioPlaying, setIsAudioPlaying] = useState(false)
          const [lastScrollY, setLastScrollY] = useState(0)
          const [isNavVisible, setIsNavVisible] = useState(true)
+         
 
          const NavContainerRef = useRef(null)
          const audioElementRef = useRef(null)
@@ -59,14 +61,24 @@ const Navbar = () => {
        <header className='absolute top-1/2 w-full -translate-y-1/2'>
             <nav className='flex items-center size-full justify-between p-4'>
                   <div className='flex items-center gap-7'>
-                       <img src="/img/Logo1.svg" alt="logo" className='w-32'/> 
+                  <video
+                    src="/videos/Logo.mp4"
+                    type="video/mp4"
+                    autoPlay
+                    loop
+                    muted
+                    className="max-w-40"
+                    /> 
                   </div>
                   <div className='flex h-full items-center'>
+                    <Link to="/Login">
                   <Button
                        id="Course-button"
-                       title = "Courses"
+                       title = "LOGIN"
                        rightIcon={<GrMultimedia />}
-                       containerClass="bg-blue-50 text-black md:flex hidden items-center justify-center gap-1" />
+                       containerClass="bg-blue-50 text-black md:flex hidden items-center justify-center gap-1"
+                       />
+                       </Link>  
                        <div className='hidden md:block'>
                            {navItems.map((item)=>(
                                     <a key={item} href={`#${item.toLowerCase()}`} className='nav-hover-btn'>

@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import Landingpage from './Pages/Landingpage';
 import Register from './Pages/Register';
 import Login from './Pages/Login';
-import About from './Pages/AboutPage';
+
 import Resetpassword from './Pages/PasswordReset'
 import Otpverification from './Pages/OtpVerification';
 // importing Admin features
@@ -18,6 +18,7 @@ import AdminHelpcenter from './Pages/Admin/HelpcenterAdmin';
 import CreateCourse from './Pages/Admin/CreateCourse';
 // importing Learner features
 import LearnerHomepage from './Pages/Learner/LearnerHomepage';
+import CourseDetails from './Pages/Learner/CourseDetails';
 function App() {
   return (
     <Router>
@@ -26,7 +27,6 @@ function App() {
       <Route path="/" element={<Landingpage />} />
       <Route path="/Register" element={<Register />} />
       <Route path="/Login" element={<Login />} />
-      <Route path="/About" element={<About />} />
       <Route path="/Resetpassword" element={<Resetpassword />} />
       <Route path="/Otpverification" element={<Otpverification />} />
       {/* importing Admin features */}
@@ -40,6 +40,7 @@ function App() {
       <Route path="/CreateCourse" element={<CreateCourse />} />
       {/* importing Admin features */}
       <Route path="/Learner" element={<LearnerHomepage />} />
+      <Route path="/Learner/CourseDetails" element={<CourseDetails />} />
       </Routes>
     </Router>
   );

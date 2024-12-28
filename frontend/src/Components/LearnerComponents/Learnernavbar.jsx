@@ -53,7 +53,14 @@ const Learnernavbar = () => {
        <header className='absolute top-1/2 w-full -translate-y-1/2'>
             <nav className='flex items-center size-full justify-between p-4 rounded-lg'>
                   <div className='flex items-center gap-7'>
-                       <img src="/img/Logo1.svg" alt="logo" className='w-32'/>
+                  <video
+                    src="/videos/Logo.mp4"
+                    type="video/mp4"
+                    autoPlay
+                    loop
+                    muted
+                    className="max-w-40"
+                    /> 
                   </div>
                   <div className='flex h-full items-center'>
                        <Button
