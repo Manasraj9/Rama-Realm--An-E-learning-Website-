@@ -15,7 +15,8 @@ const CreateCourse = () => {
         Course_Activity: false,
         Course_Difficulty: "Beginner",
         Course_trailer: null, // for file
-        Course_Notes: null, // for file
+        Course_Notes: null,
+        Course_Thumbnail: null, // for file
     });
 
     // Handle input changes
@@ -26,7 +27,7 @@ const CreateCourse = () => {
             const { name: fileName, size, type: fileType } = files[0];
 
             // Validate file type (optional)
-            const allowedFileTypes = ["application/pdf", "video/mp4"];
+            const allowedFileTypes = ["application/pdf", "video/mp4","image/jpg","image/jpeg","image/png"];
             if (!allowedFileTypes.includes(fileType)) {
                 return console.error("Invalid file type selected.");
             }
@@ -44,20 +45,21 @@ const CreateCourse = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const { Course_trailer, Course_Notes } = formData;
-
-        // Check file sizes first
+    
+        const { Course_trailer, Course_Notes, Course_Thumbnail } = formData;
+    
+        // Validate file sizes
         if (Course_trailer && Course_trailer.size > MAX_FILE_SIZE) {
-            console.log("Course trailer file is too large");
             return toast.error("Course trailer file is too large.");
         }
         if (Course_Notes && Course_Notes.size > MAX_FILE_SIZE) {
-            console.log("Course notes file is too large");
             return toast.error("Course notes file is too large.");
         }
-
-        // Prepare course data without files
+        if (Course_Thumbnail && Course_Thumbnail.size > MAX_FILE_SIZE) {
+            return toast.error("Course thumbnail file is too large.");
+        }
+    
+        // Prepare course data
         const courseData = {
             Course_Title: formData.Course_Title,
             Course_Description: formData.Course_Description,
@@ -67,105 +69,83 @@ const CreateCourse = () => {
             Course_Activity: formData.Course_Activity,
             Course_Difficulty: formData.Course_Difficulty,
         };
-
-        if (!token) {
-            console.log("No token found, user is not authenticated");
-            return toast.error("Unauthorized. Please log in again.");
-        }
-
+    
         try {
-            // Step 1: Submit Course Data (without files)
+            if (!token) throw new Error("Unauthorized. Please log in again.");
+    
+            // Submit course data
             const response = await fetch('http://localhost:1337/api/create-courses', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({ data: courseData }),
             });
-
+    
             const result = await response.json();
-
-            if (!response.ok) {
-                console.log("Error in course creation:", result.message || "Failed to create course.");
-                throw new Error(result.message || "Failed to create course.");
-            }
-
-            // Get the created course ID
+            if (!response.ok) throw new Error(result.message || "Failed to create course.");
+    
             const { id } = result.data;
-
-            // Step 2: Prepare FormData for file upload
+    
+            // File Upload
             const formDataToUpload = new FormData();
-
-            // Append the trailer file if it exists
-            if (Course_trailer) {
-                formDataToUpload.append("files", Course_trailer);
-            }
-
-            // Append the notes file if it exists
-            if (Course_Notes) {
-                formDataToUpload.append("files", Course_Notes);
-            }
-
+            if (Course_trailer) formDataToUpload.append("files", Course_trailer, Course_trailer.name);
+            if (Course_Notes) formDataToUpload.append("files", Course_Notes, Course_Notes.name);
+            if (Course_Thumbnail) formDataToUpload.append("files", Course_Thumbnail, Course_Thumbnail.name);
+    
             if (formDataToUpload.has("files")) {
                 console.log("Starting file upload...");
                 const uploadResponse = await fetch("http://localhost:1337/api/upload", {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    },
+                    method: "POST",
+                    headers: { Authorization: `Bearer ${token}` },
                     body: formDataToUpload,
                 });
-            
-                const uploadResult = await uploadResponse.json();
-                
-                const uploadedFiles = uploadResult;
-            
-                if (!uploadedFiles || !Array.isArray(uploadedFiles)) {
-                    console.error("Error: Upload response does not contain valid file data.");
-                    throw new Error("Failed to upload files or invalid response structure.");
-                }
-            
-                const trailerMedia = uploadedFiles.find(file => file.name === formData.Course_trailer.name);
-                const notesMedia = uploadedFiles.find(file => file.name === formData.Course_Notes.name);
-            
-            
+    
+                const uploadedFiles = await uploadResponse.json();
+                if (!uploadedFiles || !Array.isArray(uploadedFiles)) throw new Error("Invalid upload response.");
+    
+                // Extract file references
+                const trailerMedia = Course_trailer
+                    ? uploadedFiles.find(file => file.name === Course_trailer.name)
+                    : null;
+                const notesMedia = Course_Notes
+                    ? uploadedFiles.find(file => file.name === Course_Notes.name)
+                    : null;
+                const thumbnailMedia = Course_Thumbnail
+                    ? uploadedFiles.find(file => file.name === Course_Thumbnail.name)
+                    : null;
+    
+                // Update course with media
                 const updatePayload = {
                     data: {
-                        Course_trailer: trailerMedia,
-                        Course_Notes: notesMedia,
+                        Course_trailer: trailerMedia?.id || null,
+                        Course_Notes: notesMedia?.id || null,
+                        Course_Thumbnail: thumbnailMedia?.id || null,
                     },
                 };
-            
-                // Update the course with the file URLs
+    
                 const updateResponse = await fetch(`http://localhost:1337/api/create-courses/${id}`, {
-                    method: 'PUT',
+                    method: "PUT",
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`, // Add Authorization header here
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
                     },
                     body: JSON.stringify(updatePayload),
                 });
-            
+    
                 const updateResult = await updateResponse.json();
-            
-                if (!updateResponse.ok) {
-                    console.error("Error in updating course with media URLs:", updateResult.message || "Failed to update course.");
-                    throw new Error(updateResult.message || "Failed to update course.");
-                }
-            } else {
-                console.log("No files to upload.");
+                if (!updateResponse.ok) throw new Error(updateResult.message || "Failed to update course.");
             }
-
+    
             toast.success("Course created and media uploaded successfully!");
             navigate("/CoursesAdmin");
-
         } catch (error) {
-            console.error("Error:", error.message);  // Log any error in the process
+            console.error("Error:", error.message);
             toast.error(`An error occurred: ${error.message}`);
         }
     };
-
+    
 
     return (
         <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
@@ -234,6 +214,19 @@ const CreateCourse = () => {
                         name="Course_Notes"
                         onChange={(e) => {
                             console.log("Notes File Selected:", e.target.files[0]?.name);
+                            handleInputChange(e);
+                        }}
+                        className="mt-1 block w-full p-2 border rounded-md shadow-sm"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Course Thumbnail (Media)</label>
+                    <input
+                        type="file"
+                        name="Course_Thumbnail"
+                        onChange={(e) => {
+                            console.log("Thumbnail File Selected:", e.target.files[0]?.name);
                             handleInputChange(e);
                         }}
                         className="mt-1 block w-full p-2 border rounded-md shadow-sm"

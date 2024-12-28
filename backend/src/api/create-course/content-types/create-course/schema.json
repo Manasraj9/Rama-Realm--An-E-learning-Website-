@@ -71,6 +71,21 @@
         "Published"
       ],
       "default": "Published"
+    },
+    "Course_Thumbnail": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "Course_Rating": {
+      "type": "integer",
+      "min": 0,
+      "max": 5
     }
   }
 }

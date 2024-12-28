@@ -22,14 +22,14 @@ const CoursesAdmin = () => {
 
   const handlePublishToggle = async (courseId, currentState) => {
     const newState = currentState === "Published" ? "Draft" : "Published"; // Toggle logic
-    
+
     try {
       const response = await axios.put(`http://localhost:1337/api/create-courses/${courseId}`, {
         data: {
           Course_State: newState,  // Update the course state
         },
       });
-  
+
       console.log("Course state updated:", response.data);
       toast.success(`Course ${newState} successfully!`);
       fetchCourses(); // Refresh the course list after updating the state
@@ -38,7 +38,7 @@ const CoursesAdmin = () => {
       toast.error("Failed to update course state.");
     }
   };
-  
+
 
   const fetchCourses = async () => {
     setIsLoading(true);
@@ -196,41 +196,56 @@ const CoursesAdmin = () => {
     <div>
       <Navbar />
       <div className="flex flex-grow">
-        <Box sx={{
-          width: 240,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: {
+        {/* Sidebar */}
+        <Box
+          sx={{
             width: 240,
-            boxSizing: 'border-box',
-            position: 'relative',
-            top: '64px',
-            height: 'calc(100vh - 64px)',
-            overflowY: 'auto',
-          },
-        }}>
+            flexShrink: 0,
+            [`& .MuiDrawer-paper`]: {
+              width: 240,
+              boxSizing: 'border-box',
+              position: 'relative',
+              top: '64px',
+              height: 'calc(100vh - 64px)',
+              overflowY: 'auto',
+            },
+          }}
+        >
           <List>
             {sidebarItems.map((item) => (
-              <ListItem button key={item.text} onClick={() => navigate(item.path)}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItem
+                button
+                key={item.text}
+                onClick={() => navigate(item.path)} // Navigate to the route without reloading
+                sx={{
+                  cursor: 'pointer',
+                  color: location.pathname === item.path ? 'blue' : 'inherit', // Highlight the active item
+                  backgroundColor: location.pathname === item.path ? 'rgba(0, 0, 255, 0.1)' : 'transparent',
+                }}
+              >
+                <ListItemIcon sx={{ color: location.pathname === item.path ? 'blue' : 'inherit' }}>
+                  {item.icon}
+                </ListItemIcon>
                 <ListItemText primary={item.text} />
               </ListItem>
             ))}
           </List>
+
           <Divider />
         </Box>
 
         <div className="flex-grow p-4">
-          <Typography variant="h4" sx={{ marginTop: '20px' }}>Course Listings</Typography>
-          <div className="flex flex-wrap gap-2.5 mt-5 ml-5">
+          <Typography variant="h2"sx={{ marginTop: '20px' }}>Course Listings</Typography>
+          <div className="flex flex-wrap gap-5 ml-5 mt-10 justify-center">
             {Array.isArray(courseUpdates) && courseUpdates.length > 0 ? (
               courseUpdates.map((course) => (
-                <Card key={course.id} className='max-w-80'>
-                  <CardContent className='min-w-50'>
+                <Card key={course.id} className='w-100'>
+                  <CardContent className='w-80'>
                     <Typography variant="h4">{course.attributes.Course_Title || 'No title available'}</Typography>
                     <Typography variant="body2">
                       Duration: {course.attributes.Course_Duration || 'N/A'} Hours
                     </Typography>
-                    <Typography variant="body2">
+                    <Typography variant="body2" className='truncate'>
                       Description: {course.attributes.Course_Description || 'No description available'}
                     </Typography>
                     <Typography variant="body2">
@@ -253,17 +268,16 @@ const CoursesAdmin = () => {
                     <div className="flex justify-between items-center mt-3">
                       <button
                         onClick={() => handleEdit(course)}
-                        className="px-4 py-2 bg-[#3f72af] text-white rounded-md shadow"
+                        className="px-4 py-2 bg-[#3f72af] text-white rounded-md shadow hover:bg-white hover:text-[#3f72af]"
                       >
                         EDIT
                       </button>
                       <Link to={`/details/${course.id}`}>
                         <Button
-                          className="px-4 py-2 rounded-md shadow text-2xl"
+                          className="px-4 py-2 rounded-md shadow text-2xl hover:bg-white hover:text-[#3f72af]"
                           sx={{
                             backgroundColor: '#3f72af',
                             color: 'white',
-                            '&:hover': { backgroundColor: 'white', color: '#3f72af' },
                           }}
                         >
                           Details
@@ -271,7 +285,7 @@ const CoursesAdmin = () => {
                       </Link>
                       <button
                         onClick={() => handleClickOpen(course)}
-                        className="px-4 py-2 bg-red-500 text-white rounded-md shadow"
+                        className="px-4 py-2 bg-red-500 text-white hover:bg-white hover:text-red-500 rounded-md shadow"
                       >
                         DELETE
                       </button>

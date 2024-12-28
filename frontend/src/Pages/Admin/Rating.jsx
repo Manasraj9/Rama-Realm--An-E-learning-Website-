@@ -28,42 +28,43 @@ const Rating = () => {
 {/* Content Section with Sidebar and Main Content */}
    <div className="flex flex-grow">
         {/* Sidebar */}
-        <Box
-          sx={{
-            width: 240,
-            flexShrink: 0,
-            [`& .MuiDrawer-paper`]: {
-              width: 240,
-              boxSizing: 'border-box',
-              position: 'relative',
-              top: '64px',
-              height: 'calc(100vh - 64px)',
-              overflowY: 'auto',
-            },
-          }}
-        >
-          <List>
-            {sidebarItems.map((item) => (
-              <ListItem
-                button
-                key={item.text}
-                onClick={() => navigate(item.path)} // Navigate to the route without reloading
-                sx={{
-                    cursor: 'pointer',
-                  color: location.pathname === item.path ? 'blue' : 'inherit', // Highlight the active item
-                  backgroundColor: location.pathname === item.path ? 'rgba(0, 0, 255, 0.1)' : 'transparent',
-                }}
-              >
-                <ListItemIcon sx={{ color: location.pathname === item.path ? 'blue' : 'inherit' }}>
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItem>
-            ))}
-          </List>
-
-          <Divider />
-        </Box>
+        {/* Sidebar */}
+                <Box
+                  sx={{
+                    width: 240,
+                    flexShrink: 0,
+                    [`& .MuiDrawer-paper`]: {
+                      width: 240,
+                      boxSizing: 'border-box',
+                      position: 'relative',
+                      top: '64px',
+                      height: 'calc(100vh - 64px)',
+                      overflowY: 'auto',
+                    },
+                  }}
+                >
+                  <List>
+                    {sidebarItems.map((item) => (
+                      <ListItem
+                        button
+                        key={item.text}
+                        onClick={() => navigate(item.path)} // Navigate to the route without reloading
+                        sx={{
+                          cursor: 'pointer',
+                          color: location.pathname === item.path ? 'blue' : 'inherit', // Highlight the active item
+                          backgroundColor: location.pathname === item.path ? 'rgba(0, 0, 255, 0.1)' : 'transparent',
+                        }}
+                      >
+                        <ListItemIcon sx={{ color: location.pathname === item.path ? 'blue' : 'inherit' }}>
+                          {item.icon}
+                        </ListItemIcon>
+                        <ListItemText primary={item.text} />
+                      </ListItem>
+                    ))}
+                  </List>
+        
+                  <Divider />
+                </Box>
 </div>
 
 {/* Footer */}
