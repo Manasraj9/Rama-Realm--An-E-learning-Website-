@@ -19,28 +19,31 @@ import CreateCourse from './Pages/Admin/CreateCourse';
 // importing Learner features
 import LearnerHomepage from './Pages/Learner/LearnerHomepage';
 import CourseDetails from './Pages/Learner/CourseDetails';
+import Pricing from './Components/Pricing/Pricing';
+
 function App() {
   return (
     <Router>
       <ToastContainer position="top-right" autoClose={2000} hideProgressBar />
       <Routes>
-      <Route path="/" element={<Landingpage />} />
-      <Route path="/Register" element={<Register />} />
-      <Route path="/Login" element={<Login />} />
-      <Route path="/Resetpassword" element={<Resetpassword />} />
-      <Route path="/Otpverification" element={<Otpverification />} />
-      {/* importing Admin features */}
-      <Route path="/Admin" element={<AdminHomepage />} />
-      <Route path="/NotificationAdmin" element={<NotificationAdmin/>} />
-      <Route path="/CoursesAdmin" element={<AdminCourses />} />
-      <Route path="/RatingAdmin" element={<RatingAdmin />} />
-      <Route path="/RevenueAdmin" element={<RevenueAdmin/>} />
-      <Route path="/UserManagement" element={<UserManagement />} />
-      <Route path="/HelpCenterAdmin" element={<AdminHelpcenter />} />
-      <Route path="/CreateCourse" element={<CreateCourse />} />
-      {/* importing Admin features */}
-      <Route path="/Learner" element={<LearnerHomepage />} />
-      <Route path="/Learner/CourseDetails" element={<CourseDetails />} />
+        <Route path='/Pricing' element={<Pricing />} />
+        <Route path="/" element={<Landingpage />} />
+        <Route path="/Register" element={<Register />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Resetpassword" element={<Resetpassword />} />
+        <Route path="/Otpverification" element={<Otpverification />} />
+        {/* importing Admin features */}
+        <Route path="/Admin" element={<AdminHomepage />} />
+        <Route path="/NotificationAdmin" element={<NotificationAdmin />} />
+        <Route path="/CoursesAdmin" element={<AdminCourses />} />
+        <Route path="/RatingAdmin" element={<RatingAdmin />} />
+        <Route path="/RevenueAdmin" element={<RevenueAdmin />} />
+        <Route path="/UserManagement" element={<UserManagement />} />
+        <Route path="/HelpCenterAdmin" element={<AdminHelpcenter />} />
+        <Route path="/CreateCourse" element={<CreateCourse />} />
+        {/* importing Admin features */}
+        <Route path="/Learner" element={<LearnerHomepage />} />
+        <Route path="/Learner/CourseDetails" element={<CourseDetails />} />
       </Routes>
     </Router>
   );
