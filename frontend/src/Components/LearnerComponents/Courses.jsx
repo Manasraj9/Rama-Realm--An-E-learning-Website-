@@ -1,52 +1,119 @@
-import { useState } from "react"
-import CardSkeleton from "./CardSkeleton"
-import Course from "./Course"
+import { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
+import Card,{  CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import CardSkeleton from './CardSkeleton';
+import { toast } from 'react-toastify';
+
 const Courses = () => {
-  const [cardLoaded, setCardLoaded] = useState(false)
+  const [courses, setCourses] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  return (
-    <div className="mt-7 mb-4">
-      <div className="flex justify-center">
-        <div className="text-3xl font-robert-medium text-gray-950">Our Courses</div>
-      </div>
-      <div className="mt-10 px-8 mb-10">
-        {cardLoaded ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <SkeletonCard key={index} />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
-            {Array.from({ length: 8 }).map((_, index) => (
-            <Course Key={index}/>
-            ))}
-          </div>
-        )}
-        <div>
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const fetchCourses = async () => {
+    try {
+      const response = await fetch('http://localhost:1337/api/create-courses?populate=*', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch courses');
+      }
+
+      const data = await response.json();
+      // Only show published courses
+      const publishedCourses = data.data.filter(
+        course => course.attributes.Course_State === "Published"
+      );
+      setCourses(publishedCourses);
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+      toast.error('Failed to load courses');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, index) => (
+            <CardSkeleton key={index} className="h-[300px]" />
+          ))}
         </div>
       </div>
-  </div>
-  )
-}
+    );
+  }
 
-const SkeletonCard = () => {
   return (
-    <div className="bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300">
-      <CardSkeleton className="w-full h-36"/>
-      <div className="px-5 py-4 space-y-3">
-        <CardSkeleton className="w-3/4 h-6"/>
-        <div className=" flex item-center justify-between">
-          <div className=" flex items-center gap-3">
-            <CardSkeleton className="w-6 h-6 rounded-full"/>
-            <CardSkeleton className="w-20 h-4 rounded-full"/>
-          </div>
-          <CardSkeleton className="w-16 h-4"/>
-        </div>
-        <CardSkeleton className="w-1/4 h-4"/>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h2 className="text-3xl font-bold text-gray-900 mb-8">Available Courses</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {courses.map((course) => (
+          <Link 
+            key={course.id} 
+            to={`/Learner/CourseDetails/${course.id}`}
+            className="transform hover:scale-105 transition-transform duration-300"
+          >
+            <Card className="overflow-hidden bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+              {/* Course Thumbnail */}
+              <div className="relative h-48">
+                <img
+                  src={
+                    course.attributes.Course_Thumbnail?.data?.attributes?.url
+                      ? `http://localhost:1337${course.attributes.Course_Thumbnail.data.attributes.url}`
+                      : '/default-course-image.jpg'
+                  }
+                  alt={course.attributes.Course_Title}
+                  className="w-full h-full object-cover"
+                />
+                {course.attributes.Course_Activity && (
+                  <Badge className="absolute top-2 right-2 bg-blue-500 text-white">
+                    Interactive
+                  </Badge>
+                )}
+              </div>
+
+              <CardContent className="p-4">
+                {/* Course Title */}
+                <h3 className="text-xl font-semibold text-gray-900 mb-2 truncate">
+                  {course.attributes.Course_Title}
+                </h3>
+
+                {/* Course Description */}
+                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                  {course.attributes.Course_Description}
+                </p>
+
+                {/* Course Details */}
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center space-x-2">
+                    <Badge className={`
+                      ${course.attributes.Course_Difficulty === 'Beginner' ? 'bg-green-500' : 
+                        course.attributes.Course_Difficulty === 'Intermediate' ? 'bg-yellow-500' : 
+                        'bg-red-500'} text-white`}
+                    >
+                      {course.attributes.Course_Difficulty}
+                    </Badge>
+                  </div>
+                  <span className="text-sm text-gray-600">
+                    {course.attributes.Course_Duration} hours
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
       </div>
     </div>
   );
 };
-export default Courses
 
+export default Courses;

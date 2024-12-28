@@ -163,7 +163,7 @@ const LearnerForm = ({ username, email, password, confirmPass, setUsername, setE
         <div className='w-[550px] text-white bg-transparent'>
             <h2 className="text-center text-5xl font-semibold mb-6">Register as Learner</h2>
             <form onSubmit={handleRegister}>
-                <p className='pb-1'>Full Name</p>
+                <p className='pb-1'>Username</p>
                 <input
                     type="text"
                     placeholder="Full Name"
@@ -232,7 +232,7 @@ const AdminForm = ({ username, email, password, confirmPass, setUsername, setEma
         <div className='w-[550px] text-white'>
             <h2 className="text-center text-5xl font-semibold mb-6">Register as Admin</h2>
             <form onSubmit={handleRegister}>
-            <p className='pb-1'>Full Name</p>
+            <p className='pb-1'>Username</p>
                 <input
                     type="text"
                     placeholder="Full Name"
