@@ -5,6 +5,64 @@ import { AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {Badge} from '../ui/badge'
 import { Link } from 'react-router-dom'
 const Course = () => {
+
+  const fetchCourses = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get('http://localhost:1337/api/create-courses', {
+        params: {
+          populate: ['Course_trailer', 'Course_Notes'],
+        },
+      });
+
+      const courses = response.data.data || []; // Ensure the courses variable is an array
+
+      const enrichedCourses = await Promise.all(
+        courses.map(async (course) => {
+          const trailerId = course.attributes.Course_trailer?.data?.id;
+          const notesData = course.attributes.Course_Notes?.data;
+
+          // Handle notes safely
+          const notesIds = Array.isArray(notesData)
+            ? notesData.map(note => note.id) // Extract IDs if it's an array
+            : notesData
+              ? [notesData.id] // Wrap a single object in an array
+              : []; // Default to an empty array
+
+          // Fetch trailer details
+          const trailer = trailerId
+            ? await axios.get(`http://localhost:1337/api/upload/files/${trailerId}`)
+            : null;
+
+          // Fetch notes details
+          const notes = notesIds.length
+            ? await Promise.all(
+              notesIds.map(id => axios.get(`http://localhost:1337/api/upload/files/${id}`))
+            )
+            : [];
+
+          return {
+            ...course,
+            trailer: trailer?.data || null,
+            notes: notes.map(noteResponse => noteResponse.data),
+            state: course.attributes.State || "Draft",
+          };
+        })
+      );
+
+      setCourseUpdates(enrichedCourses); // Ensure courseUpdates is correctly updated
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+      toast.error('Failed to fetch courses.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCourses();  // Fetch courses when the component mounts
+  }, []);
+
   return (
     <Link to='/Learner/CourseDetails'>
     <Card className="overflow-hidden rounded-lg h-[19rem] bg-slate-200 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
