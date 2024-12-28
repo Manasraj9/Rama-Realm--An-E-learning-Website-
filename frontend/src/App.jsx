@@ -43,7 +43,7 @@ function App() {
         <Route path="/CreateCourse" element={<CreateCourse />} />
         {/* importing Admin features */}
         <Route path="/Learner" element={<LearnerHomepage />} />
-        <Route path="/Learner/CourseDetails" element={<CourseDetails />} />
+        <Route path="/Learner/CourseDetails/:id" element={<CourseDetails />} />
       </Routes>
     </Router>
   );

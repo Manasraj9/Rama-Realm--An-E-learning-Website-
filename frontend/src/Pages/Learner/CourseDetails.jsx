@@ -1,26 +1,91 @@
-import Footer from '@/Components/LearnerComponents/Footer_learner'
-import Learnernavbar from '@/Components/LearnerComponents/Learnernavbar'
-import { Button } from "@/components/ui/button"
-import { useState } from "react"
-import Card,{
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import ReactPlayer from "react-player/lazy"
-import { useNavigate, useParams } from "react-router-dom"
+import Footer from "@/Components/HomePage_components/Footer";
+import Learnernavbar from "@/Components/LearnerComponents/Learnernavbar";
+import { Badge } from "@/Components/ui/badge";
+import { Button } from "@/Components/ui/button";
+import Card, { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
+
+import { useEffect, useState } from "react";
+import ReactPlayer from "react-player";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CourseDetails = () => {
+  // Add necessary state and hooks
   const params = useParams();
   const navigate = useNavigate();
   const [course, setCourse] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleContinueCourse = () => {
-    navigate('/Login'); // This will redirect to login page if not authenticated
+  // Add useEffect for fetching course data
+  useEffect(() => {
+    const fetchCourseDetails = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:1337/api/create-courses/${params.id}?populate=*`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch course details');
+        }
+
+        const data = await response.json();
+        setCourse(data.data);
+      } catch (error) {
+        console.error('Error:', error);
+        setError(error.message);
+        toast.error('Failed to load course details');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (params.id) {
+      fetchCourseDetails();
+    }
+  }, [params.id]);
+  
+  useEffect(() => {
+    window.scrollTo(0, 0); // Add this line at the start of the component
+  }, []);
+
+  const handleEnrollCourse = () => {
+    navigate('/Login'); 
   };
+
+  // Add loading state
+  if (isLoading) {
+    return (
+      <>
+        <Learnernavbar />
+        <div className="flex justify-center items-center min-h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-violet-500"></div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  // Add error state
+  if (error || !course) {
+    return (
+      <>
+        <Learnernavbar />
+        <div className="flex justify-center items-center min-h-screen">
+          <p className="text-xl text-gray-600">
+            {error || "Course not found"}
+          </p>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -30,17 +95,27 @@ const CourseDetails = () => {
         <div className="bg-[#2D2F31] text-white">
           <div className="max-w-7xl mx-auto py-8 px-4 md:px-8 flex flex-col gap-2">
             <h1 className="font-bold text-2xl md:text-3xl">
-              {course?.courseTitle || "Interactive VR Course"}
+              {course?.attributes?.Course_Title}
             </h1>
-            <p className="text-base md:text-lg">Master Virtual Reality Development</p>
-            <p>
-              Created By{" "}
-              <span className="text-[#C0C4FC] underline italic">
-                {course?.creator?.name || "John Doe"}
-              </span>
+            <p className="text-base md:text-lg">
+              {course?.attributes?.Course_Subject}
             </p>
-            <div className="flex items-center gap-2 text-sm">
-              <p>Last updated: {new Date().toLocaleDateString()}</p>
+            <div className="flex items-center gap-2">
+              <Badge 
+                className={`
+                  ${course?.attributes?.Course_Difficulty === 'Beginner' ? 'bg-green-500' : 
+                    course?.attributes?.Course_Difficulty === 'Intermediate' ? 'bg-yellow-500' : 
+                    'bg-red-500'} text-white w-fit
+                `}
+              >
+                {course?.attributes?.Course_Difficulty}
+              </Badge>
+              {course?.attributes?.Course_Activity && (
+                <Badge className="bg-blue-500 text-white">Interactive</Badge>
+              )}
+            </div>
+            <div className="flex items-center gap-2 text-sm mt-2">
+              <p>Duration: {course?.attributes?.Course_Duration} hours</p>
             </div>
           </div>
         </div>
@@ -49,27 +124,39 @@ const CourseDetails = () => {
         <div className="max-w-7xl mx-auto my-5 px-4 md:px-8 flex flex-col lg:flex-row justify-between gap-10">
           {/* Left Column - Course Information */}
           <div className="w-full lg:w-1/2 space-y-5">
-            <h1 className="font-bold text-xl md:text-2xl">Description</h1>
-            <p className="text-sm">
-              This comprehensive course will teach you everything you need to know about Virtual Reality development.
-              From basic concepts to advanced implementations, you'll learn through hands-on projects and real-world examples.
-            </p>
-
             <Card>
               <CardHeader>
-                <CardTitle>Course Content</CardTitle>
-                <CardDescription>Course Modules</CardDescription>
+                <CardTitle>Course Description</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                {/* Example course modules - replace with actual data */}
-                {['Introduction to VR', 'VR Development Basics', 'Advanced Interactions', 'Final Project'].map((module, idx) => (
-                  <div key={idx} className="flex items-center gap-3 text-sm p-2 hover:bg-gray-100 rounded-lg">
-                    <span className="text-blue-500">📚</span>
-                    <p>{module}</p>
-                  </div>
-                ))}
+              <CardContent>
+                <p className="text-sm text-gray-600">
+                  {course?.attributes?.Course_Description}
+                </p>
               </CardContent>
             </Card>
+
+            {course?.attributes?.Course_trailer?.data && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Course Materials</CardTitle>
+                  <CardDescription>Additional resources for your learning</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {course?.attributes?.Course_trailer?.data && (
+                      <p className="text-sm flex items-center gap-2">
+                        📚 Course trailer available
+                      </p>
+                    )}
+                    {course?.attributes?.Course_Notes?.data && (
+                      <p className="text-sm flex items-center gap-2">
+                        📝 Course notes available
+                      </p>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           {/* Right Column - Video Player and Course Actions */}
@@ -78,7 +165,7 @@ const CourseDetails = () => {
               <CardContent className="p-4">
                 <div className="w-full aspect-video mb-4">
                   <ReactPlayer
-                    url="https://www.youtube.com/watch?v=example"
+                    url={course?.attributes?.Course_VR_link}
                     width="100%"
                     height="100%"
                     controls={true}
@@ -86,14 +173,14 @@ const CourseDetails = () => {
                 </div>
                 <h1 className="text-xl font-semibold mb-2">Course Preview</h1>
                 <div className="space-y-2">
-                  <p>✓ Full lifetime access</p>
-                  <p>✓ Access on mobile and desktop</p>
-                  <p>✓ Certificate of completion</p>
+                  <p className="text-sm text-gray-600">✓ Full lifetime access</p>
+                  <p className="text-sm text-gray-600">✓ Access on mobile and desktop</p>
+                  <p className="text-sm text-gray-600">✓ Certificate of completion</p>
                 </div>
               </CardContent>
               <CardFooter className="p-4">
                 <Button 
-                  onClick={handleContinueCourse}
+                  onClick={handleEnrollCourse}
                   className="w-full bg-blue-500 text-white hover:bg-blue-600"
                 >
                   Enroll Now
@@ -105,7 +192,7 @@ const CourseDetails = () => {
       </div>
       <Footer/>
     </>
-  )
-}
+  );
+};
 
-export default CourseDetails
+export default CourseDetails;
