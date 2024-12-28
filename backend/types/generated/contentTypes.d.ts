@@ -382,9 +382,18 @@ export interface ApiCreateCourseCreateCourse extends Schema.CollectionType {
       Attribute.Required;
     Course_Duration: Attribute.Integer & Attribute.Required;
     Course_Notes: Attribute.Media<'images' | 'files'> & Attribute.Required;
+    Course_Rating: Attribute.Integer &
+      Attribute.SetMinMax<
+        {
+          max: 5;
+          min: 0;
+        },
+        number
+      >;
     Course_State: Attribute.Enumeration<['Draft', 'Published']> &
       Attribute.DefaultTo<'Published'>;
     Course_Subject: Attribute.String & Attribute.Required;
+    Course_Thumbnail: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     Course_Title: Attribute.String &
       Attribute.Required &
       Attribute.SetMinMaxLength<{
