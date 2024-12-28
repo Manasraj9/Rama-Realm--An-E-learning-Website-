@@ -21,21 +21,51 @@ const Learner_hero = () => {
   }, []);
   return (
     <>
-    <div className="bg-violet-300 h-3/5 mt-20 w-full">
-    <div>
-      <div className="mx-auto mt-5 pt-7 pb-32 flex justify-center items-center flex-col text-center ">
-        <h1 className=" drop-shadow-lg hero-heading_2 text-gray-900 special-font mb-5"><b>w</b>elcome to <b>O</b>ur Platfor<b>m</b></h1>
-        <div className="flex flex-col w-1/3">
-          <SearchBar/>
-        </div>
-        <p className="text-lg font-general text-white mt-6">Unlock your potential with our wide range of courses</p>
-        <div className="px-5 py-5">
-          <button className="bg-blue-50 text-black font-medium font-circular-web py-3 px-5 shadow-lg rounded-full block hover:text-violet-500 md:inline-block mx-auto md:mx-0">Explore Courses</button>
-        </div>
-        <p ref={heroRef} className="text-lg h-3 drop-shadow-xl font-robert-medium text-white w-5/6 mt-6"></p>
+    <div className="bg-gradient-to-b from-violet-300 to-violet-200 min-h-[600px] mt-20 w-full">
+  <div className="container mx-auto px-4">
+    <div className="mx-auto mt-5 pt-7 pb-32 flex justify-center items-center flex-col text-center">
+      {/* Hero Heading with Animation */}
+      <h1 className="drop-shadow-lg hero-heading_2 text-gray-900 special-font mb-8">
+        <span className="inline-block hover:scale-105 transition-transform duration-300">
+          <b>W</b>elcome to <b>O</b>ur Platfor<b>m</b>
+        </span>
+      </h1>
+      
+      {/* Search Bar with Better Width Control */}
+      <div className="w-full max-w-2xl px-4 md:px-0 mb-8">
+        <SearchBar/>
       </div>
+
+      {/* Welcome Text with Better Contrast */}
+      <p className="text-lg md:text-xl font-general text-gray-800 mt-6 mb-8 max-w-2xl">
+        Unlock your potential with our wide range of courses
+      </p>
+
+      {/* Enhanced Button */}
+      <div className="mb-8">
+        <button 
+          className="bg-blue-50 text-black font-medium font-circular-web 
+                     py-3 px-8 shadow-lg rounded-full 
+                     hover:bg-white hover:text-violet-500 
+                     transform hover:scale-105 transition-all duration-300
+                     border border-transparent hover:border-violet-300
+                     md:inline-block mx-auto"
+        >
+          Explore Courses
+        </button>
+      </div>
+
+      {/* Typed Text Container with Better Visibility */}
+      <p 
+        ref={heroRef} 
+        className="text-lg md:text-xl font-robert-medium text-gray-800 
+                   max-w-3xl mx-auto leading-relaxed
+                   drop-shadow-xl animate-fade-in h-8"
+      ></p>
     </div>
   </div>
+</div>
+
   </>  
   )
 }
