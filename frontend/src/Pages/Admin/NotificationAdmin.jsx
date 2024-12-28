@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { Dashboard, Message, Settings, Help, AccountBalance, AutoStories, StarBorderPurple500, ManageAccounts } from '@mui/icons-material';
 import { Box, List, ListItem, ListItemIcon, ListItemText, Divider } from '@mui/material';
 
-// Helper function to format the date
+// Function to format the date
 const formatDate = (date) => {
   return new Date(date).toLocaleString();
 };
@@ -42,14 +42,6 @@ const NotificationAdmin = () => {
   const handleDeleteAll = () => {
     setNotifications([]);
     toast.success('All notifications deleted!');
-  };
-
-  // Function to edit a specific notification
-  const handleEdit = (id) => {
-    const newText = prompt('Edit notification text:', notifications.find(n => n.id === id).text);
-    if (newText) {
-      setNotifications(notifications.map(n => n.id === id ? { ...n, text: newText } : n));
-    }
   };
 
   return (
@@ -100,7 +92,7 @@ const NotificationAdmin = () => {
         {/* Main Content */}
         <div className="flex flex-col p-6 w-full mr-4">
           {/* Delete All button */}
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-center mb-6 mr-3">
             <h2 className="text-xl font-semibold">Notifications</h2>
             <button
               onClick={handleDeleteAll}
@@ -115,30 +107,25 @@ const NotificationAdmin = () => {
             {notifications.map((notification) => (
               <div
                 key={notification.id}
-                className="relative bg-gray-100 p-4 border rounded-md shadow-sm"
+                className="relative bg-gray-100 p-2 border rounded-md shadow-sm"
               >
-                <div className="flex justify-between items-start">
+                <div className="flex justify-betw-een items-start">
                   <div className="flex flex-col">
-                    <p className="text-sm text-gray-900">{notification.text}</p>
-                    <span className="text-xs text-gray-500">{formatDate(notification.date)}</span>
+                    <p className="text-[1.06rem] text-gray-900">{notification.text}</p>
+                    <span className="text-balance text-gray-500">{formatDate(notification.date)}</span>
                   </div>
                 </div>
 
-                {/* Edit and Delete buttons */}
-                <div className="absolute top-2 right-2 flex space-x-2 pr-3">
-                  <button
-                    onClick={() => handleEdit(notification.id)}
-                    className="bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600"
-                  >
-                    Edit
-                  </button>
+                {/* Delete button */}
+                <div className="absolute top-1/2 right-2 transform -translate-y-1/2">
                   <button
                     onClick={() => handleDelete(notification.id)}
-                    className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600"
+                    className="bg-red-500 text-white text-[1rem] px-4 py-1 rounded-md hover:bg-red-600"
                   >
                     Delete
                   </button>
                 </div>
+
               </div>
             ))}
           </div>
