@@ -50,13 +50,13 @@ const CourseDetails = () => {
       fetchCourseDetails();
     }
   }, [params.id]);
-  
+
   useEffect(() => {
     window.scrollTo(0, 0); // Add this line at the start of the component
   }, []);
 
   const handleEnrollCourse = () => {
-    navigate('/Login'); 
+    navigate('/Login');
   };
 
   // Add loading state
@@ -89,7 +89,7 @@ const CourseDetails = () => {
 
   return (
     <>
-      <Learnernavbar/>
+      <Learnernavbar />
       <div className="space-y-5 mt-24">
         {/* Hero Section */}
         <div className="bg-[#2D2F31] text-white">
@@ -101,11 +101,11 @@ const CourseDetails = () => {
               {course?.attributes?.Course_Subject}
             </p>
             <div className="flex items-center gap-2">
-              <Badge 
+              <Badge
                 className={`
-                  ${course?.attributes?.Course_Difficulty === 'Beginner' ? 'bg-green-500' : 
-                    course?.attributes?.Course_Difficulty === 'Intermediate' ? 'bg-yellow-500' : 
-                    'bg-red-500'} text-white w-fit
+                  ${course?.attributes?.Course_Difficulty === 'Beginner' ? 'bg-green-500' :
+                    course?.attributes?.Course_Difficulty === 'Intermediate' ? 'bg-yellow-500' :
+                      'bg-red-500'} text-white w-fit
                 `}
               >
                 {course?.attributes?.Course_Difficulty}
@@ -135,7 +135,7 @@ const CourseDetails = () => {
               </CardContent>
             </Card>
 
-            {course?.attributes?.Course_trailer?.data && (
+            {course?.attributes?.Course_Notes?.data && (
               <Card>
                 <CardHeader>
                   <CardTitle>Course Materials</CardTitle>
@@ -149,9 +149,17 @@ const CourseDetails = () => {
                       </p>
                     )}
                     {course?.attributes?.Course_Notes?.data && (
-                      <p className="text-sm flex items-center gap-2">
-                        📝 Course notes available
-                      </p>
+                      <div className="text-sm flex items-center gap-2">
+                        📝 Course notes available -
+                        <a
+                          href={`http://localhost:1337${course.attributes.Course_Notes.data.attributes.url}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500 hover:text-blue-700 underline"
+                        >
+                          Download Notes
+                        </a>
+                      </div>
                     )}
                   </div>
                 </CardContent>
@@ -165,10 +173,24 @@ const CourseDetails = () => {
               <CardContent className="p-4">
                 <div className="w-full aspect-video mb-4">
                   <ReactPlayer
-                    url={course?.attributes?.Course_VR_link}
+                    url={`http://localhost:1337${course?.attributes?.Course_trailer?.data?.attributes?.url}`}
                     width="100%"
                     height="100%"
                     controls={true}
+                    playing={true}
+                    muted={true}
+                    onError={(e) => {
+                      console.error("Error playing video:", e);
+                      toast.error("Error playing course trailer");
+                    }}
+                    onReady={() => {
+                      console.log("Video ready to play");
+                    }}
+                    fallback={
+                      <div className="w-full aspect-video bg-gray-200 flex items-center justify-center">
+                        <p className="text-gray-500">Video loading...</p>
+                      </div>
+                    }
                   />
                 </div>
                 <h1 className="text-xl font-semibold mb-2">Course Preview</h1>
@@ -179,7 +201,7 @@ const CourseDetails = () => {
                 </div>
               </CardContent>
               <CardFooter className="p-4">
-                <Button 
+                <Button
                   onClick={handleEnrollCourse}
                   className="w-full bg-blue-500 text-white hover:bg-blue-600"
                 >
@@ -190,7 +212,7 @@ const CourseDetails = () => {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };
