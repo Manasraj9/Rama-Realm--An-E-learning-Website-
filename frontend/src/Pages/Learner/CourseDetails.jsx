@@ -55,9 +55,9 @@ const CourseDetails = () => {
     window.scrollTo(0, 0); // Add this line at the start of the component
   }, []);
 
-  const handleEnrollCourse = () => {
-    navigate('/Login');
-  };
+  // const handleEnrollCourse = () => {
+  //   navigate('https://rama-realm.itch.io/vr-modern-room?secret=2JN0d6WuPzNAQJCwLDYC6lFBlwA');
+  // };
 
   // Add loading state
   if (isLoading) {
@@ -201,12 +201,14 @@ const CourseDetails = () => {
                 </div>
               </CardContent>
               <CardFooter className="p-4">
+              <a target="_blank" href="https://rama-realm.itch.io/vr-modern-room?secret=2JN0d6WuPzNAQJCwLDYC6lFBlwA">
                 <Button
-                  onClick={handleEnrollCourse}
+                  // onClick={handleEnrollCourse}
                   className="w-full bg-blue-500 text-white hover:bg-blue-600"
                 >
-                  Enroll Now
+                 Open VR
                 </Button>
+                </a>
               </CardFooter>
             </Card>
           </div>
