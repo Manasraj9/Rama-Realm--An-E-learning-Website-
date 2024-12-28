@@ -19,6 +19,7 @@ import CreateCourse from './Pages/Admin/CreateCourse';
 // importing Learner features
 import LearnerHomepage from './Pages/Learner/LearnerHomepage';
 import CourseDetails from './Pages/Learner/CourseDetails';
+import Pricing from './Components/Pricing/Pricing';
 function App() {
   return (
     <Router>
@@ -41,7 +42,7 @@ function App() {
         <Route path="/CreateCourse" element={<CreateCourse />} />
         {/* importing Admin features */}
         <Route path="/Learner" element={<LearnerHomepage />} />
-        <Route path="/Learner/CourseDetails" element={<CourseDetails />} />
+        <Route path="/Learner/CourseDetails/:id" element={<CourseDetails />} />
       </Routes>
     </Router>
   );
