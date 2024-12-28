@@ -77,6 +77,7 @@ const Register = () => {
                 console.log("Error response:", data); // Log the error response from the backend
                 throw new Error(data.message || 'Signup failed');
             }
+            
             toast.success('Registered successfully!');
             navigate('/login'); // Redirect to login page
         } catch (error) {

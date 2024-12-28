@@ -1,0 +1,229 @@
+import React, { useState, useEffect } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "react-toastify";
+
+const Profile = () => {
+  const [isEditing, setIsEditing] = useState(false); // Editing disabled initially
+  const [profileImage, setProfileImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    bio: "",
+    photoUrl: null,
+  });
+  const [profileExists, setProfileExists] = useState(false); // To check if profile exists
+
+  // Fetch email from localStorage in useEffect to ensure it's available
+  const [emailFromStorage, setEmailFromStorage] = useState(null);
+
+  useEffect(() => {
+    // Get email from localStorage
+    const email = localStorage.getItem("email");
+    if (email) {
+      setEmailFromStorage(email);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (emailFromStorage) {
+      setUser((prevUser) => ({
+        ...prevUser,
+        email: emailFromStorage,
+      }));
+
+      // Fetch profile data for the logged-in user based on email
+      const fetchProfile = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:1337/api/profiles?filters[email][$eq]=${emailFromStorage}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch profile data");
+          }
+
+          const profilesData = await response.json();
+          const profile = profilesData.data[0];
+
+          if (profile) {
+            setUser({
+              name: profile.attributes.name || "",
+              email: emailFromStorage,
+              bio: profile.attributes.bio || "",
+              photoUrl: profile.attributes.photoUrl || null,
+            });
+            setProfileExists(true); // Profile found, set flag to true
+          } else {
+            setProfileExists(false); // No profile found, prompt to create one
+          }
+        } catch (error) {
+          console.error("Error fetching profile:", error);
+        }
+      };
+
+      fetchProfile();
+    }
+  }, [emailFromStorage]); // Dependency on emailFromStorage to trigger when it's updated
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value });
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfileImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSave = async () => {
+    const { name, email, bio } = user; // Destructure the profile data
+
+    if (!email) {
+      toast.error("Email is required!");
+      return;
+    }
+
+    try {
+      // Prepare FormData with profile information
+      const formData = new FormData();
+      formData.append("data", JSON.stringify({
+        name,
+        email,
+        bio,
+      }));
+
+      if (profileImage) {
+        formData.append("files.photo", profileImage);
+      }
+
+      let response;
+
+      // If the profile exists, update it
+      if (profileExists) {
+        response = await fetch(`http://localhost:1337/api/profiles/${email}`, {
+          method: "PUT",
+          body: formData,
+        });
+      } else {
+        // If no profile exists, create one
+        response = await fetch("http://localhost:1337/api/profiles", {
+          method: "POST",
+          body: formData,
+        });
+      }
+
+      if (!response.ok) {
+        throw new Error("Failed to save profile");
+      }
+
+      toast.success("Profile saved successfully!");
+      setIsEditing(false);
+      setProfileExists(true); // Mark profile as saved
+    } catch (error) {
+      console.error("Error saving profile:", error);
+      toast.error("Failed to save profile");
+    }
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setProfileImage(null);
+    setPreviewImage(null);
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+      <h1 className="text-2xl font-bold mb-4">
+        {user.email ? `Welcome, ${user.name || "User"}` : "Create Your Profile"}
+      </h1>
+
+      <div className="flex items-center gap-6">
+        <Avatar className="w-24 h-24">
+          {previewImage ? (
+            <AvatarImage src={previewImage} alt={user.name} />
+          ) : user.photoUrl ? (
+            <AvatarImage src={user.photoUrl} alt={user.name} />
+          ) : (
+            <AvatarFallback>{user.name[0]?.toUpperCase() || "U"}</AvatarFallback>
+          )}
+        </Avatar>
+
+        {isEditing && !profileExists ? (
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="w-60"
+          />
+        ) : null}
+      </div>
+
+      <div className="mt-6">
+        <label className="block text-sm font-medium">Name</label>
+        <Input
+          type="text"
+          name="name"
+          value={user.name || ""}
+          onChange={handleInputChange}
+          className="w-full"
+          disabled={!isEditing}
+        />
+      </div>
+
+      <div className="mt-4">
+        <label className="block text-sm font-medium">Email</label>
+        <Input
+          type="email"
+          name="email"
+          value={user.email || ""}
+          onChange={handleInputChange}
+          className="w-full"
+          disabled={!isEditing || profileExists}
+        />
+      </div>
+
+      <div className="mt-4">
+        <label className="block text-sm font-medium">Bio</label>
+        <Textarea
+          name="bio"
+          value={user.bio || ""}
+          onChange={handleInputChange}
+          className="w-full"
+          disabled={!isEditing}
+        />
+      </div>
+
+      <div className="flex items-center gap-4 mt-6">
+        {isEditing ? (
+          <>
+            <Button onClick={handleSave} className="bg-green-600 text-white">
+              Save
+            </Button>
+            <Button onClick={handleCancel} className="bg-gray-300 text-black">
+              Cancel
+            </Button>
+          </>
+        ) : (
+          <Button onClick={() => setIsEditing(true)} className="bg-blue-600 text-white">
+            Edit Profile
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Profile;
