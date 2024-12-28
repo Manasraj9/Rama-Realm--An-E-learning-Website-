@@ -19,6 +19,18 @@ const CoursesAdmin = () => {
   const location = useLocation(); // Get the current route
   const navigate = useNavigate(); // Navigate programmatically
   const [isPublished, setIsPublished] = useState(true); // Default state: Published
+  const [originalCourseDetails, setOriginalCourseDetails] = useState({
+    name: '',
+    duration: '',
+    description: '',
+    subject: '',
+    difficulty: '',
+    trailer: null,
+    notes: [],
+    thumbnail: null,
+    vrlink: '',
+  });
+  
 
   const handlePublishToggle = async (courseId, currentState) => {
     const newState = currentState === "Published" ? "Draft" : "Published"; // Toggle logic
@@ -40,16 +52,147 @@ const CoursesAdmin = () => {
   };
 
 
+  // Handle file upload
+  const handleFileUpload = async (file) => {
+    const formData = new FormData();
+    formData.append('files', file);
+
+    try {
+      const uploadResponse = await axios.post(`${API_URL.replace('/courses', '')}/upload`, formData);
+      return uploadResponse.data[0]; // Return the uploaded file object
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      return null;
+    }
+  };
+
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedCourse(null); // Close the deletion dialog
+  };
+
+  const handleDeleteCourse = async (courseId) => {
+    try {
+      await axios.delete(`http://localhost:1337/api/create-courses/${courseId}`);
+      fetchCourses(); // Refresh the course list
+      toast.success("Course deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting course:", error);
+      toast.error("Failed to delete course.");
+    }
+  };
+
+  // In your handleEdit function, set the original course details
+const handleEdit = async (course) => {
+  setSelectedCourse(course); // Set the course to be edited
+  setIsLoading(true); // Set loading state to true while fetching data
+
+  try {
+    // Fetch the full details of the course, including trailer and notes
+    const response = await axios.get(`http://localhost:1337/api/create-courses/${course.id}`, {
+      params: {
+        populate: ['Course_trailer', 'Course_Notes'], // Populate the related fields like trailer and notes
+      },
+    });
+
+    const courseData = response.data.data;
+
+    // Set the course details to be used in the form
+    setCourseDetails({
+      id: courseData.id,
+      name: courseData.attributes.Course_Title || '',
+      duration: courseData.attributes.Course_Duration || '',
+      description: courseData.attributes.Course_Description || '',
+      subject: courseData.attributes.Course_Subject || '',
+      difficulty: courseData.attributes.Course_Difficulty || '',
+      vrlink: courseData.attributes.Course_VR_link || '',
+    });
+
+    // Set the original course details for comparison
+    setOriginalCourseDetails({
+      name: courseData.attributes.Course_Title || '',
+      duration: courseData.attributes.Course_Duration || '',
+      description: courseData.attributes.Course_Description || '',
+      subject: courseData.attributes.Course_Subject || '',
+      difficulty: courseData.attributes.Course_Difficulty || '',
+      vrlink: courseData.attributes.Course_VR_link || '',
+    });
+
+    setIsLoading(false); // Stop loading
+  } catch (error) {
+    console.error("Error fetching course details:", error);
+    toast.error("Failed to fetch course details.");
+    setIsLoading(false);
+  }
+};
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const dataToSend = {
+    title: courseDetails.name || originalCourseDetails.name,
+    duration: courseDetails.duration || originalCourseDetails.duration,
+    description: courseDetails.description || originalCourseDetails.description,
+    subject: courseDetails.subject || originalCourseDetails.subject,
+    difficulty: courseDetails.difficulty || originalCourseDetails.difficulty,
+    vrlink: courseDetails.vrlink || originalCourseDetails.vrlink
+  };
+
+  console.log("Data to send:", dataToSend);
+
+  try {
+    const response = await axios.put(
+      `http://localhost:1337/api/create-courses/${courseDetails.id}`,
+      { data: dataToSend },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    console.log('Course updated successfully:', response.data);
+    toast.success("Course updated successfully!");
+
+    // Refresh the course list or re-fetch course details after successful update
+    fetchCourses(); // Re-fetch courses to see the updated data
+  } catch (error) {
+    console.error('Error:', error);
+    toast.error('Failed to update course.');
+  }
+};
+
+
+  // Dialog to confirm course deletion
+  const handleClickOpen = (course) => {
+    setSelectedCourse(course);
+    setOpen(true);
+  };
+
+  const sidebarItems = [
+    { text: 'Dashboard', icon: <Dashboard />, path: '/Admin' },
+    { text: 'Notification', icon: <Message />, path: '/NotificationAdmin' },
+    { text: 'Rating', icon: <StarBorderPurple500 />, path: '/RatingAdmin' },
+    { text: 'Courses', icon: <AutoStories />, path: '/CoursesAdmin' },
+    { text: 'Revenue', icon: <AccountBalance />, path: '/RevenueAdmin' },
+    { text: 'User Management', icon: <ManageAccounts />, path: '/UserManagement' },
+    { text: 'Settings', icon: <Settings />, path: '/Adminsettings' },
+    { text: 'Help Center', icon: <Help />, path: '/HelpCenterAdmin' },
+  ];
+
+
   const fetchCourses = async () => {
     setIsLoading(true);
     try {
       const response = await axios.get('http://localhost:1337/api/create-courses', {
         params: {
-          populate: ['Course_trailer', 'Course_Notes'], // Include related media
+          populate: ['Course_trailer', 'Course_Notes'],
         },
       });
 
-      const courses = response.data.data || [];
+      const courses = response.data.data || []; // Ensure the courses variable is an array
+
       const enrichedCourses = await Promise.all(
         courses.map(async (course) => {
           const trailerId = course.attributes.Course_trailer?.data?.id;
@@ -83,7 +226,7 @@ const CoursesAdmin = () => {
         })
       );
 
-      setCourseUpdates(enrichedCourses); // Store enriched courses
+      setCourseUpdates(enrichedCourses); // Ensure courseUpdates is correctly updated
     } catch (error) {
       console.error('Error fetching courses:', error);
       toast.error('Failed to fetch courses.');
@@ -92,105 +235,10 @@ const CoursesAdmin = () => {
     }
   };
 
-  // Handle file upload
-  const handleFileUpload = async (file) => {
-    const formData = new FormData();
-    formData.append('files', file);
-
-    try {
-      const uploadResponse = await axios.post(`${API_URL.replace('/courses', '')}/upload`, formData);
-      return uploadResponse.data[0]; // Return the uploaded file object
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      return null;
-    }
-  };
-
-  // Save or update course
-  const handleSaveCourse = async () => {
-    const isEdit = Boolean(courseDetails.id);
-    const url = isEdit ? `${API_URL}/${courseDetails.id}` : API_URL;
-    const method = isEdit ? "put" : "post";
-
-    // Upload trailer
-    let trailerData = null;
-    if (newTrailer) {
-      trailerData = await handleFileUpload(newTrailer);
-    }
-
-    // Upload notes
-    let notesData = [];
-    if (newNotes.length > 0) {
-      const uploadedNotes = await Promise.all(newNotes.map(handleFileUpload));
-      notesData = uploadedNotes.filter(Boolean); // Filter out failed uploads
-    }
-
-    const data = {
-      ...courseDetails,
-      trailer: trailerData ? trailerData.id : courseDetails.trailer?.id,
-      notes: notesData.map(note => note.id),
-    };
-
-    try {
-      await axios[method](url, { data });
-      fetchCourses();
-      setSelectedCourse(null); // Close the edit dialog
-      toast.success(isEdit ? "Course updated successfully!" : "Course created successfully!");
-    } catch (error) {
-      console.error("Error saving course:", error);
-      toast.error("Failed to save course.");
-    }
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setSelectedCourse(null); // Close the deletion dialog
-  };
-
-  const handleDeleteCourse = async (courseId) => {
-    try {
-      await axios.delete(`${API_URL}/${courseId}`);
-      fetchCourses(); // Refresh the course list
-      toast.success("Course deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting course:", error);
-      toast.error("Failed to delete course.");
-    }
-  };
-
-  // Handle course selection for editing
-  const handleEdit = (course) => {
-    setSelectedCourse(course);
-    setCourseDetails({
-      name: course.Course_Title,
-      instructor: course.Course_instructor,
-      duration: course.Course_Duration,
-      description: course.Course_Description,
-      prerequisites: course.Course_prerequisites,
-      syllabus: course.Course_syllabus,
-    });
-  };
-
-  // Dialog to confirm course deletion
-  const handleClickOpen = (course) => {
-    setSelectedCourse(course);
-    setOpen(true);
-  };
-
-  const sidebarItems = [
-    { text: 'Dashboard', icon: <Dashboard />, path: '/Admin' },
-    { text: 'Notification', icon: <Message />, path: '/NotificationAdmin' },
-    { text: 'Rating', icon: <StarBorderPurple500 />, path: '/RatingAdmin' },
-    { text: 'Courses', icon: <AutoStories />, path: '/CoursesAdmin' },
-    { text: 'Revenue', icon: <AccountBalance />, path: '/RevenueAdmin' },
-    { text: 'User Management', icon: <ManageAccounts />, path: '/UserManagement' },
-    { text: 'Settings', icon: <Settings />, path: '/Adminsettings' },
-    { text: 'Help Center', icon: <Help />, path: '/HelpCenterAdmin' },
-  ];
-
   useEffect(() => {
-    fetchCourses(); // Fetch courses on component mount
+    fetchCourses();  // Fetch courses when the component mounts
   }, []);
+
 
   return (
     <div>
@@ -235,7 +283,7 @@ const CoursesAdmin = () => {
         </Box>
 
         <div className="flex-grow p-4">
-          <Typography variant="h2"sx={{ marginTop: '20px' }}>Course Listings</Typography>
+          <Typography variant="h2" sx={{ marginTop: '20px' }}>Course Listings</Typography>
           <div className="flex flex-wrap gap-5 ml-5 mt-10 justify-center">
             {Array.isArray(courseUpdates) && courseUpdates.length > 0 ? (
               courseUpdates.map((course) => (
@@ -257,7 +305,7 @@ const CoursesAdmin = () => {
                         <Switch
                           checked={course.attributes.Course_State === "Published"} // Check if the course is published
                           onChange={() => handlePublishToggle(course.id, course.attributes.Course_State)} // Pass the course ID and current state
-                          color="primary"
+                          color="success"
                           name="publishSwitch"
                           inputProps={{ 'aria-label': 'publish-unpublish toggle' }}
                         />
@@ -266,12 +314,16 @@ const CoursesAdmin = () => {
                     />
 
                     <div className="flex justify-between items-center mt-3">
+                      {/* EDIT BUTTON */}
+
                       <button
-                        onClick={() => handleEdit(course)}
+                        onClick={() => handleEdit(course)}  // Correct function for Edit
                         className="px-4 py-2 bg-[#3f72af] text-white rounded-md shadow hover:bg-white hover:text-[#3f72af]"
                       >
                         EDIT
                       </button>
+
+                      {/* DETAILS BUTTON */}
                       <Link to={`/details/${course.id}`}>
                         <Button
                           className="px-4 py-2 rounded-md shadow text-2xl hover:bg-white hover:text-[#3f72af]"
@@ -280,16 +332,23 @@ const CoursesAdmin = () => {
                             color: 'white',
                           }}
                         >
-                          Details
+                          DETAILS
                         </Button>
                       </Link>
+
+                      {/* DELETE BUTTON */}
                       <button
-                        onClick={() => handleClickOpen(course)}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevents the click from propagating to parent elements
+                          handleClickOpen(course); // Open the Delete confirmation dialog
+                        }}
                         className="px-4 py-2 bg-red-500 text-white hover:bg-white hover:text-red-500 rounded-md shadow"
                       >
                         DELETE
                       </button>
+
                     </div>
+
                   </CardContent>
                 </Card>
               ))
@@ -299,32 +358,70 @@ const CoursesAdmin = () => {
 
           </div>
 
+          <Dialog open={Boolean(selectedCourse)} onClose={() => setSelectedCourse(null)}>
+            <DialogTitle className='text-3xl'>Edit Course</DialogTitle>
+            <div>
+            <DialogContent className='p-4 flex flex-wrap gap-2.5'>
+              <TextField
+                label="Course Name"
+                value={courseDetails.name || ''}
+                onChange={(e) => setCourseDetails({ ...courseDetails, name: e.target.value })}
+                fullWidth
+              />
+              <TextField
+                label="Duration (in hours)"
+                value={courseDetails.duration || ''}
+                onChange={(e) => setCourseDetails({ ...courseDetails, duration: e.target.value })}
+                fullWidth
+              />
+              <TextField
+                label="Description"
+                value={courseDetails.description || ''}
+                onChange={(e) => setCourseDetails({ ...courseDetails, description: e.target.value })}
+                fullWidth
+                multiline
+                rows={4}
+              />
+              <TextField
+                label="Subject"
+                value={courseDetails.subject || ''}
+                onChange={(e) => setCourseDetails({ ...courseDetails, subject: e.target.value })}
+                fullWidth
+              />
+              <TextField
+                label="Difficulty"
+                value={courseDetails.difficulty || ''}
+                onChange={(e) => setCourseDetails({ ...courseDetails, difficulty: e.target.value })}
+                fullWidth
+              />
+              <TextField
+                label="VR link"
+                value={courseDetails.vrlink || ''}
+                onChange={(e) => setCourseDetails({ ...courseDetails, VR_Link: e.target.value })}
+                fullWidth
+              />
+
+
+            </DialogContent>
+            </div>
+            <DialogActions>
+              <Button onClick={() => setSelectedCourse(null)} sx={{ color: 'red' }}>Cancel</Button>
+              <Button onClick={handleSubmit} color="primary">Save</Button>
+            </DialogActions>
+          </Dialog>
+
+
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Confirm Deletion</DialogTitle>
             <DialogContent>
               <Typography>Are you sure you want to delete this course?</Typography>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose} sx={{ backgroundColor: 'grey', color: 'white' }}>Cancel</Button>
-              <Button onClick={() => handleDeleteCourse(selectedCourse._id)} sx={{ backgroundColor: 'red', color: 'white' }}>Delete</Button>
+              <Button onClick={handleClose} sx={{ color: 'grey' }}>Cancel</Button>
+              <Button onClick={() => handleDeleteCourse(selectedCourse.id)} sx={{ color: 'red' }}>Delete</Button>
             </DialogActions>
           </Dialog>
 
-          <Dialog open={Boolean(selectedCourse)} onClose={() => setSelectedCourse(null)}>
-            <DialogTitle>Edit Course</DialogTitle>
-            <DialogContent>
-              <TextField label="Course Name" value={courseDetails.name} onChange={(e) => setCourseDetails({ ...courseDetails, name: e.target.value })} fullWidth />
-              <TextField label="Instructor" value={courseDetails.instructor} onChange={(e) => setCourseDetails({ ...courseDetails, instructor: e.target.value })} fullWidth />
-              <TextField label="Duration (weeks)" value={courseDetails.duration} onChange={(e) => setCourseDetails({ ...courseDetails, duration: e.target.value })} fullWidth />
-              <TextField label="Description" value={courseDetails.description} onChange={(e) => setCourseDetails({ ...courseDetails, description: e.target.value })} fullWidth multiline rows={4} />
-              <TextField label="Prerequisites" value={courseDetails.prerequisites} onChange={(e) => setCourseDetails({ ...courseDetails, prerequisites: e.target.value })} fullWidth />
-              <TextField label="Syllabus" value={courseDetails.syllabus} onChange={(e) => setCourseDetails({ ...courseDetails, syllabus: e.target.value })} fullWidth multiline rows={6} />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setSelectedCourse(null)}>Cancel</Button>
-              <Button color="primary" onClick={handleSaveCourse}>Save</Button>
-            </DialogActions>
-          </Dialog>
         </div>
       </div>
     </div>
