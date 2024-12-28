@@ -1,18 +1,19 @@
-import React from 'react'
+// import React from 'react'
 import Card, { CardContent } from '../ui/card'
 import {Avatar} from '../ui/avatar'
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {Badge} from '../ui/badge'
-
+import { Link } from 'react-router-dom'
 const Course = () => {
   return (
+    <Link to='/Learner/CourseDetails'>
     <Card className="overflow-hidden rounded-lg h-[19rem] bg-slate-200 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
       <div className='mb-3'>
         <img
           src="https://img-c.udemycdn.com/course/750x422/3873464_403c_3.jpg"
           alt="course"
           className='w-full h-36 object-cover rounded-t-lg'
-        />
+          />
       </div>
       <CardContent>
         <h3 className='hover:underline font-bold text-lg truncate mb-3'>Nextjs Complete Course in Hindi 2024</h3>
@@ -33,6 +34,7 @@ const Course = () => {
         </div>
       </CardContent>
     </Card>
+  </Link>
   )
 }
 

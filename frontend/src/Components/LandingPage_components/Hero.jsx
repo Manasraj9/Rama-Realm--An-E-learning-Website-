@@ -4,7 +4,7 @@ import { TfiAgenda } from "react-icons/tfi";
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import VideoPreview from './VideoPreview';
-
+import Typed from 'typed.js';
 
 import Button from './Button';
 import { ScrollTrigger } from 'gsap/all';
@@ -16,6 +16,25 @@ const Hero = () => {
          const [loadedVideo, setLoadedVideo] = useState(0)
          const totalVideos = 4
          const nextVdRef = useRef(null);
+         
+         const heroRef = useRef(null);
+         const typedRef = useRef(null);
+
+         useEffect(() => {
+              typedRef.current = new Typed(heroRef.current, {
+               strings: ["R<b>a</b>ma R<b>e</b>alm"],
+               startDelay: 150,
+               typeSpeed: 70,
+               backSpeed: 70,
+               backDelay: 70,
+               showCursor: false,
+               cursorChar: "!",
+               loop: true
+             });
+             return () => {
+               typedRef.current.destroy();
+             };
+           }, []);
 
          const handleMiniVdClick = () => {
               setHasClicked(true);
@@ -123,7 +142,7 @@ const Hero = () => {
                   <h1 className='special-font hero-heading absolute bottom-5 right-5 z-40 text-blue-75'>Lear<b>n</b>ing</h1>
                   <div className='absolute left-0 top-0 z-40 size-full'>
                            <div className='mt-24 px-5 sm:px-10'>
-                                    <h1 className='special-font hero-heading font-zentry text-blue-100'><b>R</b>ama <b>R</b>ealm</h1>
+                                    <h1 ref={heroRef} className='special-font hero-heading font-zentry text-blue-100 min-h-28'></h1>
                                     <p className='mb-5 max-w-64 font-robert-regular text-blue-100'>Enter the Creative MultiVerse <br />of Learning</p>
                                     <Button id='watch-trailer' title="Watch Trailer" leftIcon={<TiLocationArrow />} rightIcon={<TfiAgenda />}
                                     containerClass="!bg-yellow-300 flex-center gap-1" />
