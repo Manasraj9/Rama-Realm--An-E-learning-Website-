@@ -40,6 +40,7 @@ const Login = () => {
 
 // Print it to the console
 console.log( token);
+console.log(data.user.email)
                 // Redirect based on userType
                 if (data.user.userType === 'Admin') {
                     navigate('/Admin'); // Admin homepage
