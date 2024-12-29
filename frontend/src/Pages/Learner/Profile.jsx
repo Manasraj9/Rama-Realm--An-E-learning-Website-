@@ -39,7 +39,7 @@ const Profile = () => {
       const fetchProfile = async () => {
         try {
           const response = await fetch(
-            `http://localhost:1337/api/profiles?filters[email][$eq]=${emailFromStorage}`,
+            `http://localhost:1337/api/users?filters[email][$eq]=${emailFromStorage}`,
             {
               method: "GET",
               headers: {
@@ -145,7 +145,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg translate-y-[20%]  rounded-lg">
       <h1 className="text-2xl font-bold mb-4">
         {user.email ? `Welcome, ${user.name || "User"}` : "Create Your Profile"}
       </h1>
