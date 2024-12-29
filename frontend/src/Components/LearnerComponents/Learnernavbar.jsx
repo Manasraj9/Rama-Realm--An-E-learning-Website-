@@ -1,12 +1,12 @@
 import { useRef, useState, useEffect } from 'react'
 import Button from "../LandingPage_components/Button";
-import { GrMultimedia } from "react-icons/gr";
 import { useWindowScroll } from 'react-use'
 import gsap from 'gsap';
 import { Link } from "react-router-dom";
 import { Avatar } from '../ui/avatar';
 import { LogOut, User, Settings, Library } from 'lucide-react';
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { FaCrown } from "react-icons/fa";
 import {
      DropdownMenu,
      DropdownMenuContent,
@@ -17,7 +17,7 @@ import {
      DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-const navItems = ['About', 'Contact']
+const navItems = ['Home', 'Contact']
 const Learnernavbar = () => {
      const [lastScrollY, setLastScrollY] = useState(0)
      const [isNavVisible, setIsNavVisible] = useState(true)
@@ -64,17 +64,33 @@ const Learnernavbar = () => {
                               />
                          </div>
                          <div className='flex h-full items-center'>
+                              <Link to={"/Learnerpricing"}>
                               <Button
                                    id="Course-button"
-                                   title="Courses"
-                                   rightIcon={<GrMultimedia />}
+                                   title="Pricing"
+                                   rightIcon={<FaCrown style={{color: "#FFD43B"}} />}
                                    containerClass="bg-blue-50 text-black md:flex hidden items-center justify-center gap-1"
-                              />
+                                   />
+                              </Link>
                               <div className='hidden md:block'>
                                    {navItems.map((item) => (
-                                        <a key={item} href={`#${item.toLowerCase()}`} className='nav-hover-btn_learner'>
-                                             {item}
-                                        </a>
+                                        item === 'Home' ? (
+                                             <Link
+                                                  key={item}
+                                                  to="/learner"
+                                                  className='nav-hover-btn_learner'
+                                             >
+                                                  {item}
+                                             </Link>
+                                        ) : (
+                                             <a
+                                                  key={item}
+                                                  href={`#${item.toLowerCase()}`}
+                                                  className='nav-hover-btn_learner'
+                                             >
+                                                  {item}
+                                             </a>
+                                        )
                                    ))}
                               </div>
                               <div className='mx-5'>

@@ -23,12 +23,12 @@ import LearnerHomepage from './Pages/Learner/LearnerHomepage';
 import CourseDetails from './Pages/Learner/CourseDetails';
 import Profile from './Pages/Learner/Profile';
 import Pricing from './Components/Pricing/Pricing';
+import Learnerpricing from './Pages/Learner/learnerpricing';
 function App() {
   return (
     <Router>
       <ToastContainer position="top-right" autoClose={2000} hideProgressBar />
       <Routes>
-        <Route path='/Pricing' element={<Pricing />} />
         <Route path="/" element={<Landingpage />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/Login" element={<Login />} />
@@ -47,6 +47,9 @@ function App() {
         <Route path="/Learner" element={<LearnerHomepage />} />
         <Route path="/Learner/CourseDetails/:id" element={<CourseDetails />} />
         <Route path="/Learner/Profile" element={<Profile />} />
+        {/* implementing pricing features */}
+        <Route path='/Pricing' element={<Pricing />} />
+        <Route path="/learnerpricing" element={<Learnerpricing />} />
       </Routes>
     </Router>
   );

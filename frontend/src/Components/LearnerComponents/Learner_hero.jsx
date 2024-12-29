@@ -46,7 +46,7 @@ const Learner_hero = () => {
 
     // Animate clip path on scroll
     gsap.to(videoContainerRef.current, {
-      clipPath: 'polygon(5% 0%, 95% 0%, 100% 95%, 0% 100%)',
+      clipPath: 'polygon(14% 0, 86% 0, 100% 100%, 0 100%)',
       borderRadius: '0px 0px 40% 40%',
       scrollTrigger: {
         trigger: videoContainerRef.current,
