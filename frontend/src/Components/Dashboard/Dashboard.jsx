@@ -96,7 +96,7 @@ const Dashboard = () => {
           <h3 className="text-xl font-bold">0</h3>
           <p>Rating</p>
         </div>
-        <div className="p-4 bg-indigo-600 text-white rounded-lg">
+        <div className="p-4 bg-green-500 text-white rounded-lg">
           <h3 className="text-xl font-bold">{stats.publishedCourses}</h3>
           <p>Pulished Courses</p>
         </div>
