@@ -21,11 +21,21 @@ const Learner_hero = () => {
   }, []);
   return (
     <>
-    <div className="bg-gradient-to-b from-violet-300 to-violet-200 min-h-[600px] mt-20 w-full">
-  <div className="container mx-auto px-4">
+    <div className='bg-white flex justify-center z-0'>
+                <video
+                    src="/videos/Learnerbg.mp4"
+                    type="video/mp4"
+                    autoPlay
+                    loop
+                    muted
+                    className="w-full max-h-[650px] bg-white object-cover"
+                    onError={(e) => console.error("Video failed to load:", e)}
+                />
+            </div>
+  <div className="container mx-auto px-4 absolute top-8">
     <div className="mx-auto mt-5 pt-7 pb-32 flex justify-center items-center flex-col text-center">
       {/* Hero Heading with Animation */}
-      <h1 className="drop-shadow-lg hero-heading_2 text-gray-900 special-font mb-8">
+      <h1 className="drop-shadow-lg hero-heading_2 text-slate-50 special-font mb-8">
         <span className="inline-block hover:scale-105 transition-transform duration-300">
           <b>W</b>elcome to <b>O</b>ur Platfor<b>m</b>
         </span>
@@ -37,7 +47,7 @@ const Learner_hero = () => {
       </div>
 
       {/* Welcome Text with Better Contrast */}
-      <p className="text-lg md:text-xl font-general text-gray-800 mt-6 mb-8 max-w-2xl">
+      <p className="text-lg md:text-xl font-general text-slate-50 mt-6 mb-8 max-w-2xl">
         Unlock your potential with our wide range of courses
       </p>
 
@@ -58,13 +68,12 @@ const Learner_hero = () => {
       {/* Typed Text Container with Better Visibility */}
       <p 
         ref={heroRef} 
-        className="text-lg md:text-xl font-robert-medium text-gray-800 
+        className="text-lg md:text-xl font-robert-medium text-slate-50 
                    max-w-3xl mx-auto leading-relaxed
                    drop-shadow-xl animate-fade-in h-8"
       ></p>
     </div>
   </div>
-</div>
 
   </>  
   )

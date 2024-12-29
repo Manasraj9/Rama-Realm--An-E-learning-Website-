@@ -21,6 +21,7 @@ import CreateCourse from './Pages/Admin/CreateCourse';
 // importing Learner features
 import LearnerHomepage from './Pages/Learner/LearnerHomepage';
 import CourseDetails from './Pages/Learner/CourseDetails';
+import Profile from './Pages/Learner/Profile';
 import Pricing from './Components/Pricing/Pricing';
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         {/* importing Admin features */}
         <Route path="/Learner" element={<LearnerHomepage />} />
         <Route path="/Learner/CourseDetails/:id" element={<CourseDetails />} />
+        <Route path="/Learner/Profile" element={<Profile />} />
       </Routes>
     </Router>
   );
