@@ -13,7 +13,7 @@ import Otpverification from './Pages/OtpVerification';
 import AdminHomepage from './Pages/Admin/AdminHomepage';
 import NotificationAdmin from './Pages/Admin/NotificationAdmin';
 import AdminCourses from './Pages/Admin/CoursesAdmin';
-import RatingAdmin from './Pages/Admin/Rating';
+import RatingAdmin from './Pages/Admin/RatingAdmin';
 import RevenueAdmin from './Pages/Admin/RevenueAdmin';
 import UserManagement from './Pages/Admin/UserManagement';
 import AdminHelpcenter from './Pages/Admin/HelpcenterAdmin';
