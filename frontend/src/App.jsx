@@ -4,6 +4,8 @@ import { ToastContainer } from 'react-toastify';
 import Landingpage from './Pages/Landingpage';
 import Register from './Pages/Register';
 import Login from './Pages/Login';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 import Resetpassword from './Pages/PasswordReset'
 import Otpverification from './Pages/OtpVerification';
