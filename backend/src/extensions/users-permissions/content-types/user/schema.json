@@ -72,6 +72,19 @@
         "Admin"
       ],
       "default": "Learner"
+    },
+    "BIO": {
+      "type": "text"
+    },
+    "ProfilePhoto": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }
