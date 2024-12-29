@@ -15,7 +15,7 @@ const BentoCardTilt = ({children, className=''}) => {
     const tiltY = (relativeX - 0.5)*-10;
 
     const newTransform = `perspective(700px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(0.98, 0.98, 0.98)`;
-    setTransfromStyle(newTransform)
+    setTransfromStyle(newTransform) 
   }
   const handleMouseLeave = () => {
     setTransfromStyle('')
@@ -73,7 +73,7 @@ const Features = () => {
          </div>
        <BentoCardTilt className='border-hsla relative mb-7 h-96 w-full overflow-hidden rounded-md md:h-[65vh]'>
          <BentoCard
-          src="videos/feature-1.mp4"
+          src="videos/feature-50.mp4"
           title={<>Ra<b>n</b>dom T<b>i</b>tle</>}
           description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, iure quia."
           isComingSoon={true}
@@ -112,7 +112,7 @@ const Features = () => {
          </BentoCardTilt>
          <BentoCardTilt className='bento-tilt_2'>
              <video
-              src='videos/feature-5.mp4'
+              src='videos/feature-17.mp4'
               loop
               muted
               autoPlay

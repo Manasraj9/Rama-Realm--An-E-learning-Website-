@@ -359,3 +359,17 @@ body {
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
 }
+/* Add to your global CSS */
+.transform-gpu {
+  transform: perspective(1000px);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.card-content {
+  transform: translateZ(20px);
+}
+
+.card-image {
+  transform: translateZ(40px);
+}
