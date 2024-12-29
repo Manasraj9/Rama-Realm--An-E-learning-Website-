@@ -21,8 +21,18 @@ const Learner_hero = () => {
   }, []);
   return (
     <>
-    <div className="bg-gradient-to-b from-violet-300 to-violet-200 min-h-[600px] mt-20 w-full">
-  <div className="container mx-auto px-4">
+    <div className='bg-white flex justify-center z-0'>
+                <video
+                    src="/videos/Learnerbg.mp4"
+                    type="video/mp4"
+                    autoPlay
+                    loop
+                    muted
+                    className="w-full max-h-[650px] bg-white object-cover"
+                    onError={(e) => console.error("Video failed to load:", e)}
+                />
+            </div>
+  <div className="container mx-auto px-4 absolute top-8">
     <div className="mx-auto mt-5 pt-7 pb-32 flex justify-center items-center flex-col text-center">
       {/* Hero Heading with Animation */}
       <h1 className="drop-shadow-lg hero-heading_2 text-gray-900 special-font mb-8">
@@ -64,7 +74,6 @@ const Learner_hero = () => {
       ></p>
     </div>
   </div>
-</div>
 
   </>  
   )
