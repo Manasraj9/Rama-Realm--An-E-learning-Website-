@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 
 const Dashboard = () => {
+  const [stats, setStats] = useState({
+    totalCourses: 0,
+    publishedCourses: 0,
+  });
+  const [loading, setLoading] = useState(true);
 
   // Bar Chart Data
   const barData = {
@@ -30,7 +35,32 @@ const Dashboard = () => {
     },
   };
 
-  // Job Update Data
+  useEffect(() => {
+    const fetchCourseCounts = async () => {
+      try {
+        // Fetch all courses from the Strapi API
+        const response = await fetch("http://localhost:1337/api/create-courses");
+        const data = await response.json();
+
+        const courses = data?.data || [];
+
+        // Count total courses and published courses
+        const totalCourses = courses.length;
+        const publishedCourses = courses.filter(
+          (course) => course.attributes.Course_State === "Published"
+        ).length;
+
+        setStats({ totalCourses, publishedCourses });
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching course counts:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchCourseCounts();
+  }, []);
+
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen ">
@@ -38,21 +68,22 @@ const Dashboard = () => {
       <div className="grid grid-cols-4 gap-4 mb-6 ">
         {/* Stats Cards */}
         <div className="p-4 bg-blue-600 text-white rounded-lg">
-          <h3 className="text-xl font-bold">11</h3>
+          <h3 className="text-xl font-bold">0</h3>
           <p>Total Enrolled Students</p>
         </div>
         <div className="p-4 bg-green-500 text-white rounded-lg">
-          <h3 className="text-xl font-bold">11</h3>
+          <h3 className="text-xl font-bold">0</h3>
           <p>Total Revenue</p>
         </div>
         <div className="p-4 bg-indigo-600 text-white rounded-lg">
-          <h3 className="text-xl font-bold">11</h3>
+          <h3 className="text-xl font-bold">0</h3>
           <p>Rating</p>
         </div>
         <div className="p-4 bg-indigo-600 text-white rounded-lg">
-          <h3 className="text-xl font-bold">11</h3>
-          <p>Active Courses</p>
+          <h3 className="text-xl font-bold">{stats.publishedCourses}</h3>
+          <p>Pulished Courses</p>
         </div>
+        
       </div>
 
       {/* Job Statistics Section */}
@@ -68,13 +99,8 @@ const Dashboard = () => {
           <div className="w-1/3 pl-6">
             <div className="grid grid-cols-1 gap-4">
               <div className="p-4 bg-white rounded-lg shadow-md">
-                <h3 className="text-lg font-bold">Total course completed</h3>
-                <p className="text-2xl font-bold">11</p>
-              </div>
-              <div className="p-4 bg-white rounded-lg shadow-md">
-                <h3 className="text-lg font-bold">Open Courses</h3>
-                <p className="text-2xl font-bold">11</p>
-                <p>Jobs Opened</p>
+                <h3 className="text-lg font-bold">Total course</h3>
+                <p className="text-2xl font-bold">{stats.totalCourses}</p>
               </div>
             </div>
           </div>
