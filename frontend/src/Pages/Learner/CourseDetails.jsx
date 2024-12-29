@@ -179,6 +179,7 @@ const CourseDetails = () => {
                     controls={true}
                     playing={true}
                     muted={true}
+                    loop={true}
                     onError={(e) => {
                       console.error("Error playing video:", e);
                       toast.error("Error playing course trailer");
