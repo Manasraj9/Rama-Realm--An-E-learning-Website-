@@ -8,6 +8,7 @@ const Dashboard = () => {
     totalCourses: 0,
     publishedCourses: 0,
   });
+  const [learnerCount, setLearnerCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   // Bar Chart Data
@@ -57,7 +58,23 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
+    const fetchLearnerCount = async () => {
+      try {
+        // Fetch all users from the Strapi API
+        const response = await fetch("http://localhost:1337/api/users");
+        const data = await response.json();
 
+        // Count users with userType = "Learner"
+        const learners = data?.filter((user) => user.userType === "Learner");
+        setLearnerCount(learners.length);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchLearnerCount();
     fetchCourseCounts();
   }, []);
 
@@ -68,8 +85,8 @@ const Dashboard = () => {
       <div className="grid grid-cols-4 gap-4 mb-6 ">
         {/* Stats Cards */}
         <div className="p-4 bg-blue-600 text-white rounded-lg">
-          <h3 className="text-xl font-bold">0</h3>
-          <p>Total Enrolled Students</p>
+          <h3 className="text-xl font-bold">{learnerCount}</h3>
+          <p>Total Number of Learners</p>
         </div>
         <div className="p-4 bg-green-500 text-white rounded-lg">
           <h3 className="text-xl font-bold">0</h3>
