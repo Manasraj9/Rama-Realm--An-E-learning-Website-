@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../Components/Bars/Navbar';
 import Footer from '../Components/HomePage_components/Footer';
 import { toast } from 'react-toastify';
-
+import 'react-toastify/dist/ReactToastify.css';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

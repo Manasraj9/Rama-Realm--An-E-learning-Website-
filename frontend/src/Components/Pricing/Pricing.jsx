@@ -36,7 +36,7 @@ const Pricing = () => {
         },
         {
             title: "Pro Plan",
-            price: "4999",
+            price: "199",
             features: proFeatures,
             description: "Access everything and unlock full potential.",
             footerText: "Switch to Pro",
