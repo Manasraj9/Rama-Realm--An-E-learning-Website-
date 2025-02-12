@@ -14,10 +14,11 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
+        const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:1337/api/auth/local', {
+            const response = await fetch(`${BACKEND_URL}/api/auth/local`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ identifier: email, password }),

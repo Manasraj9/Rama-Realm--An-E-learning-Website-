@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import image1 from '../images/Register_Learners.svg';
 
 const Register = () => {
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
     const [selectedOption, setSelectedOption] = useState('Learner');
     const [userType, setUserType] = useState('Learner');
     const [username, setUsername] = useState('');
@@ -65,7 +66,7 @@ const Register = () => {
 
         // Proceed with API call if all validations pass
         try {
-            const response = await fetch('http://localhost:1337/api/auth/local/register', {
+            const response = await fetch(`${BACKEND_URL}/api/auth/local/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData),
