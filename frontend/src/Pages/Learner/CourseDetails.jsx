@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 
 const CourseDetails = () => {
   // Add necessary state and hooks
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
   const params = useParams();
   const navigate = useNavigate();
   const [course, setCourse] = useState(null);
@@ -22,7 +23,7 @@ const CourseDetails = () => {
     const fetchCourseDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:1337/api/create-courses/${params.id}?populate=*`,
+          `${BACKEND_URL}/api/create-courses/${params.id}?populate=*`,
           {
             method: "GET",
             headers: {

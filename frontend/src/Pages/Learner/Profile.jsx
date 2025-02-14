@@ -10,6 +10,7 @@ import Learnernavbar from "@/Components/LearnerComponents/Learnernavbar";
 import Footer from "@/Components/LearnerComponents/Footer_learner";
 
 const Profile = () => {
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
   const [isEditing, setIsEditing] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -40,7 +41,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch('http://localhost:1337/api/users', {
+        const response = await fetch(`${BACKEND_URL}/api/users`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
