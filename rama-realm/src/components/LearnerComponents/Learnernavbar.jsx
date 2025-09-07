@@ -2,10 +2,10 @@ import { useRef, useState, useEffect } from 'react'
 import Button from "../LandingPage_components/Button";
 import { useWindowScroll } from 'react-use'
 import gsap from 'gsap';
-import { Link } from "react-router-dom";
+import Link from 'next/link';
 import { Avatar } from '../ui/avatar';
 import { LogOut, User, Settings, Library } from 'lucide-react';
-import { AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { AvatarFallback, AvatarImage } from "../ui/avatar"
 import { FaCrown } from "react-icons/fa";
 import {
      DropdownMenu,
@@ -64,7 +64,7 @@ const Learnernavbar = () => {
                               />
                          </div>
                          <div className='flex h-full items-center'>
-                              <Link to={"/Learnerpricing"}>
+                              <Link href={"/Learnerpricing"}>
                               <Button
                                    id="Course-button"
                                    title="Pricing"
@@ -77,7 +77,7 @@ const Learnernavbar = () => {
                                         item === 'Home' ? (
                                              <Link
                                                   key={item}
-                                                  to="/learner"
+                                                  href="/learner"
                                                   className='nav-hover-btn_learner'
                                              >
                                                   {item}

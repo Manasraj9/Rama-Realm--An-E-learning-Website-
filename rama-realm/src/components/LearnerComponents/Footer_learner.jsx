@@ -1,4 +1,4 @@
-import Logo from '@/images/Logo.svg'
+"use client"
 
 const Footer = () => {
   return (
@@ -6,7 +6,7 @@ const Footer = () => {
       <div className=" px-4">
         <div className="flex justify-between pb-2">
           <div>
-            <img src={Logo} alt="Company Logo" className='max-w-60' />
+            <img src="/images/Logo.svg" alt="Company Logo" className='max-w-60' />
           </div>
           {/* About Section */}
           <div>

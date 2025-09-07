@@ -1,4 +1,4 @@
-//A9hWTFu44MeqAYa8
+"use client"
 import Courses from '@/Components/LearnerComponents/Courses';
 import Footer from '@/Components/LearnerComponents/Footer_learner';
 import Learnernavbar from '@/Components/LearnerComponents/Learnernavbar';
